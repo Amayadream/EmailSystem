@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.dao.IAdminDao" >
+  <resultMap id="BaseResultMap" type="com.amayadream.pojo.Admin" >
+    <id column="AID" property="aid" />
+    <result column="USERNAME" property="username" />
+    <result column="PASSWORD" property="password" />
+    <result column="EMAIL" property="email" />
+    <result column="FIRSTTIME" property="firsttime" />
+    <result column="LASTTIME" property="lasttime" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    AID, USERNAME, PASSWORD, EMAIL, FIRSTTIME, LASTTIME
+  </sql>
+
+  <select id="selectUserByUsername" resultMap="BaseResultMap" parameterType="string">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ADMIN
+    WHERE USERNAME = #{username}
+  </select>
+</mapper>
