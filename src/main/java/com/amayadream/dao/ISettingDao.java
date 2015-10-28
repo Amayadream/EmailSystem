@@ -1,6 +1,7 @@
 package com.amayadream.dao;
 
 import com.amayadream.pojo.Setting;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import java.util.Map;
  * Date   :  2015.10.09 09:35
  * TODO   :
  */
+
+@Repository("settingDao")
 public interface ISettingDao {
     public Setting selectSettingByUserid(int userid);
 

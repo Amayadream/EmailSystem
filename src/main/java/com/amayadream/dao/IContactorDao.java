@@ -1,6 +1,7 @@
 package com.amayadream.dao;
 
 import com.amayadream.pojo.Contactor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import java.util.Map;
  * Date   :  2015.10.07 22:38
  * TODO   :
  */
+
+@Repository("contactorDao")
 public interface IContactorDao {
     public List<Contactor> selectAllContactor(Map<String, Object> map);
 

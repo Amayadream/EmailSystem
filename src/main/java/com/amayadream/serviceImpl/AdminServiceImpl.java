@@ -31,4 +31,5 @@ public class AdminServiceImpl implements IAdminService {
         map.put("lasttime",lasttime);
         return this.adminDao.updateLastTime(map);
     }
+
 }

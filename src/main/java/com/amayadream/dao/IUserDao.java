@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.amayadream.pojo.User;
+import org.springframework.stereotype.Repository;
 
+@Repository("userDao")
 public interface IUserDao {
 	
 	public List<User> selectAllUser(Map<String, Object> map);

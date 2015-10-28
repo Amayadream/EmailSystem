@@ -5,9 +5,7 @@ import com.amayadream.pojo.Contactor;
 import com.amayadream.service.IContactorService;
 import com.amayadream.tools.Regex;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -24,6 +22,7 @@ import java.util.Map;
  */
 
 @Controller
+@SessionAttributes("id")
 @RequestMapping(value = "contact")
 public class ContactorController {
 
@@ -32,9 +31,8 @@ public class ContactorController {
 
     @RequestMapping(value = "/all", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public List<Contactor> all(int page, HttpServletResponse response, Map map, Map map2, HttpSession session){
+    public List<Contactor> all(@ModelAttribute("id") int userid, int page, Map map, Map map2, HttpSession session){
         int pageSize = 10;
-        int userid =  (Integer)session.getAttribute("id");
         if(page==1){
             map.put("startRow", 1);
             map.put("endRow", pageSize);
@@ -47,7 +45,6 @@ public class ContactorController {
         Contactor contactor = this.contactorService.countCount(userid);
         int rowCount = contactor.getCid();
         List<Contactor> list = this.contactorService.queryAllContactor(map);
-        response.setCharacterEncoding("utf-8");
         if(rowCount%pageSize!=0){
             rowCount = rowCount/pageSize+1;
         }
@@ -63,8 +60,7 @@ public class ContactorController {
 
     @RequestMapping(value = "/asd", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String asd(int limit, int offset, Map map, HttpSession session){
-        int userid =  (Integer)session.getAttribute("id");
+    public String asd(@ModelAttribute("id") int userid, int limit, int offset, Map map, HttpSession session){
         int startRow = offset;
         int endRow = offset + limit;
         map.put("startRow",startRow);
@@ -81,8 +77,7 @@ public class ContactorController {
 
     @RequestMapping(value = "/id", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Contactor id(@RequestParam("id") int cid, HttpSession session, Map map){
-        int userid =  (Integer)session.getAttribute("id");
+    public Contactor id(@RequestParam("id") int cid, @ModelAttribute("id") int userid, Map map){
         map.put("userid", userid);
         map.put("cid",cid);;
         Contactor contactor = this.contactorService.queryContactorByCid(map);
@@ -91,8 +86,7 @@ public class ContactorController {
 
     @RequestMapping(value = "/name", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Contactor name(@RequestParam("name") String cname, HttpSession session, Map map){
-        int userid =  (Integer)session.getAttribute("id");
+    public Contactor name(@RequestParam("name") String cname, @ModelAttribute("id") int userid, Map map){
         map.put("userid",userid);
         map.put("cname",cname);
         Contactor contactor = this.contactorService.queryContactorByCname(map);
@@ -100,9 +94,8 @@ public class ContactorController {
     }
 
     @RequestMapping(value = "add")
-    public String add(@RequestParam("name") String cname,String email, int groups,
-                               RedirectAttributes redirectAttributes, HttpSession session,Regex regex, Map map1, Map map2){
-        int userid =  (Integer)session.getAttribute("id");
+    public String add(@RequestParam("name") String cname, @ModelAttribute("id") int userid, String email, int groups,
+                               RedirectAttributes redirectAttributes, Regex regex, Map map1, Map map2){
         if(cname == null || cname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR", "姓名不能为空,请重新输入!");
             return "redirect:/contact";
@@ -143,9 +136,8 @@ public class ContactorController {
 
 
     @RequestMapping(value = "/edit")
-    public String edit(@RequestParam("id") int cid,@RequestParam("name") String cname, String email, int groups,
-                                RedirectAttributes redirectAttributes, Regex regex, Map map1, Map map2,HttpSession session){
-        int userid =  (Integer)session.getAttribute("id");
+    public String edit(@RequestParam("id") int cid,@RequestParam("name") String cname, @ModelAttribute("id") int userid, String email, int groups,
+                                RedirectAttributes redirectAttributes, Regex regex, Map map1, Map map2){
         if(cname == null || cname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","姓名不能为空,请重新输入!");
             return "redirect:/contact";
@@ -189,8 +181,7 @@ public class ContactorController {
     }
 
     @RequestMapping("/delete")
-    public String delete(@RequestParam("id") int cid, RedirectAttributes redirectAttributes, HttpSession session, Map map1, Map map2){
-        int userid =  (Integer)session.getAttribute("id");
+    public String delete(@RequestParam("id") int cid, @ModelAttribute("id") int userid, RedirectAttributes redirectAttributes, HttpSession session, Map map1, Map map2){
         map1.put("cid",cid);
         map1.put("userid",userid);
         if(this.contactorService.queryContactorByCid(map1) == null){

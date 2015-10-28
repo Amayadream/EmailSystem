@@ -4,8 +4,10 @@ import com.amayadream.pojo.Setting;
 import com.amayadream.service.ISettingService;
 import com.amayadream.tools.Regex;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import java.util.Map;
  */
 
 @Controller
+@SessionAttributes("id")
 @RequestMapping("/setting")
 public class SettingController {
     @Resource
@@ -27,13 +30,12 @@ public class SettingController {
 
     /**
      * 展示设置内容
-     * @param session
+     * @param userid
      * @return
      */
     @RequestMapping("/show")
     @ResponseBody
-    public Setting show(HttpSession session){
-        int userid = (Integer)session.getAttribute("id");
+    public Setting show(@ModelAttribute("id") int userid){
         Setting setting = this.settingService.querySettingByUserid(userid);
         return setting;
     }

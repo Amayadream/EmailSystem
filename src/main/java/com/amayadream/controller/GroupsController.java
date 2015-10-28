@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.amayadream.pojo.Groups;
 import com.amayadream.service.IGroupsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -23,16 +21,16 @@ import java.util.Map;
  */
 
 @Controller
+@SessionAttributes("id")
 @RequestMapping("/groups")
 public class GroupsController {
     @Resource
     private IGroupsService groupsService;
 
-    @RequestMapping("/all")
+    @RequestMapping(value = "/all", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String show(HttpSession session,HttpServletResponse response, int page, Map map1, Map map2, RedirectAttributes redirectAttributes){
+    public String show(@ModelAttribute("id") int userid, int page, Map map1, Map map2){
         int pageSize = 2;
-        int userid =  (Integer)session.getAttribute("id");
         if(page==1){
             map1.put("startRow", 1);
             map1.put("endRow", pageSize);
@@ -46,7 +44,6 @@ public class GroupsController {
         Groups groups = this.groupsService.countGroups(userid);
         int rowCount = groups.getGid();
         List<Groups> list = this.groupsService.queryAllGroups(map1);
-        response.setCharacterEncoding("utf-8");
         if(rowCount%pageSize!=0){
             rowCount = rowCount/pageSize+1;
         }
@@ -59,17 +56,15 @@ public class GroupsController {
         return JSON.toJSONString(map2);
     }
 
-    @RequestMapping("one")
+    @RequestMapping(value = "one", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Groups one(@RequestParam("id") int gid, HttpSession session){
-        int userid =  (Integer)session.getAttribute("id");
+    public Groups one(@RequestParam("id") int gid, @ModelAttribute("id") int userid){
         Groups groups = this.groupsService.queryGroupsByGid(gid, userid);
         return groups;
     }
 
     @RequestMapping("add")
-    public String add(@RequestParam("name") String gname, HttpSession session, Map map, RedirectAttributes redirectAttributes){
-        int userid =  (Integer)session.getAttribute("id");
+    public String add(@RequestParam("name") String gname, @ModelAttribute("id") int userid, Map map, RedirectAttributes redirectAttributes){
         if(gname == null || gname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","分组名不能为空!");
             return "redirect:/groups";
@@ -94,8 +89,7 @@ public class GroupsController {
     }
 
     @RequestMapping("edit")
-    public String edit(@RequestParam("name") String gname,@RequestParam("id") int gid, HttpSession session, RedirectAttributes redirectAttributes, Map map){
-        int userid = (Integer)session.getAttribute("id");
+    public String edit(@RequestParam("name") String gname,@RequestParam("id") int gid, @ModelAttribute("id") int userid, RedirectAttributes redirectAttributes, Map map){
         if(gname == null || gname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","分组名不能为空,请重新输入!");
             return "redirect:/groups";
@@ -130,8 +124,7 @@ public class GroupsController {
 
 
     @RequestMapping("delete")
-    public String delete(@RequestParam("id") int gid, HttpSession session, RedirectAttributes redirectAttributes){
-        int userid =  (Integer)session.getAttribute("id");
+    public String delete(@RequestParam("id") int gid, @ModelAttribute("id") int userid, RedirectAttributes redirectAttributes){
         Groups groups = this.groupsService.queryGroupsByGid(gid, userid);
         if(groups == null){
             redirectAttributes.addFlashAttribute("ERROR","该分组不存在!");
