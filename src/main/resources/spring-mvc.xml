@@ -11,7 +11,7 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">  
                         
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->  
-    <context:component-scan base-package="com.amayadream.controller" />  
+    <context:component-scan base-package="com.amayadream.email.controller" />
     
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  
@@ -50,7 +50,7 @@
             <mvc:exclude-mapping path="/login.jsp"/>
             <mvc:exclude-mapping path="/style/**"/>
             <mvc:exclude-mapping path="/ueditor/**"/>
-            <bean id="loginInterceptor" class="com.amayadream.interceptor.LoginInterceptor"/>
+            <bean id="loginInterceptor" class="com.amayadream.email.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>
@@ -60,16 +60,11 @@
     <!-- 配置js，css等静态文件直接映射到对应的文件夹，不被DispatcherServlet处理 mapping to WebRoot里面的静态文件位置目录
         location 访问地址 -->
     <!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
-    <mvc:resources mapping="/style/css/**" location="/style/css/"/>
-    <mvc:resources mapping="/style/fonts/**" location="/style/fonts/"/>
-    <mvc:resources mapping="/style/img/**" location="/style/img/"/>
-    <mvc:resources mapping="/style/js/**" location="/style/js/"/>
-    <mvc:resources mapping="/ueditor/**" location="/ueditor/"/>
-    <mvc:resources mapping="/resource/**" location="/resource/"/>
+    <mvc:resources mapping="/common/**" location="/common/"/>
+    <mvc:resources mapping="/plugins/**" location="/plugins/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
-    <mvc:resources mapping="/Ace/**" location="/Ace/"/>
 
-      
     <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->  
     <bean id="multipartResolver"    
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    

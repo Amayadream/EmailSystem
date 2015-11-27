@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.email.dao.IContactorDao" >
+       <resultMap id="BaseResultMap" type="com.amayadream.email.pojo.Contactor" >
+              <id column="CID" property="cid" />
+              <result column="USERID" property="userid"/>
+              <result column="CNAME" property="cname" />
+              <result column="EMAIL" property="email" />
+              <result column="GROUPS" property="groups" />
+              <result column="GROUPSNAME" property="groupsname"/>
+       </resultMap>
+
+       <sql id="Base_Column_List" >
+              CID, USERID, CNAME, EMAIL, GROUPS
+       </sql>
+
+       <select id="selectAllContactor" resultMap="BaseResultMap" parameterType="java.util.Map">
+              SELECT * FROM
+              (
+              SELECT A.*,ROWNUM RN
+              FROM (
+              SELECT C.CID,C.USERID,C.CNAME,C.EMAIL,G.GNAME GROUPSNAME FROM CONTACTOR C
+              INNER JOIN GROUPS G
+              ON C.GROUPS = G.GID
+              WHERE C.USERID = #{userid}
+              ORDER BY C.CID DESC
+              ) A
+              )
+              WHERE RN BETWEEN #{startRow} AND #{endRow}
+       </select>
+
+       <select id="selectContactorByCid" resultMap="BaseResultMap" parameterType="java.util.Map" >
+              SELECT <include refid="Base_Column_List" />
+              FROM CONTACTOR
+              WHERE CID = #{cid}
+              AND USERID = #{userid}
+       </select>
+
+       <select id="selectContactorByCname" resultMap="BaseResultMap" parameterType="java.util.Map">
+              SELECT
+              <include refid="Base_Column_List" />
+              FROM CONTACTOR
+              WHERE CNAME = #{cname}
+              AND USERID = #{userid}
+       </select>
+
+       <select id="countContactor" resultMap="BaseResultMap" parameterType="java.util.Map">
+              SELECT COUNT(CID) CID FROM CONTACTOR WHERE USERID = #{userid}
+       </select>
+
+       <insert id="insertContactor" parameterType="com.amayadream.email.pojo.Contactor" >
+              INSERT INTO CONTACTOR (CID,USERID, CNAME, EMAIL ,GROUPS)
+              VALUES (seq_contactor_cid.nextval,#{userid}, #{cname}, #{email}, #{groups})
+       </insert>
+
+       <update id="updateContactor" parameterType="com.amayadream.email.pojo.Contactor">
+              UPDATE CONTACTOR
+              SET CNAME = #{cname}, EMAIL = #{email}, GROUPS = #{groups}
+              WHERE CID = #{cid}
+       </update>
+
+       <delete id="deleteContactor" parameterType="java.util.Map" >
+              DELETE FROM CONTACTOR
+              WHERE CID = #{cid}
+              AND USERID = #{userid}
+       </delete>
+
+</mapper>
