@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.emailsystem.dao.IContactDao" >
+
+  <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Contact" >
+    <id column="CID" property="cid" />
+    <result column="USERID" property="userid"/>
+    <result column="NAME" property="name" />
+    <result column="EMAIL" property="email" />
+    <result column="GROUPID" property="groupid" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CID, USERID, NAME, EMAIL, GROUPID
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT * FROM
+      (
+        SELECT A.*,ROWNUM RN
+        FROM (
+          SELECT C.CID,C.USERID,C.NAME,C.EMAIL,G.GNAME GROUPSNAME FROM CONTACTOR C
+          INNER JOIN GROUPS G
+          ON C.GROUPID = G.GID
+          WHERE C.USERID = #{userid}
+          ORDER BY C.CID DESC
+        ) A
+      )
+    WHERE RN BETWEEN #{startRow} AND #{endRow}
+  </select>
+
+  <select id="selectContactById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact" >
+    SELECT <include refid="Base_Column_List" />
+    FROM CONTACT
+    WHERE CID = #{cid}
+    AND USERID = #{userid}
+  </select>
+
+  <select id="selectContactByName" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM CONTACT
+    WHERE NAME = #{name}
+    AND USERID = #{userid}
+  </select>
+
+  <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
+    SELECT COUNT(CID) CID FROM CONTACT
+    WHERE USERID = #{userid}
+  </select>
+
+  <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Contact" >
+    INSERT INTO CONTACT (CID,USERID, NAME, EMAIL ,GROUPID)
+    VALUES (sys_guid(),#{userid}, #{name}, #{email}, #{groupid})
+  </insert>
+
+  <update id="update" parameterType="com.amayadream.emailsystem.pojo.Contact">
+    UPDATE CONTACT
+    SET NAME = #{name}, EMAIL = #{email}, GROUPID = #{groupid}
+    WHERE USERID = #{userid}
+    AND CID = #{cid}
+  </update>
+
+  <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Contact" >
+    DELETE FROM CONTACT
+    WHERE CID = #{cid}
+    AND USERID = #{userid}
+  </delete>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.emailsystem.dao.ISettingDao" >
+  <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Setting" >
+    <id column="USERID" property="userid"/>
+    <result column="SENDNAME" property="sendname" />
+    <result column="SENDMAIL" property="sendmail" />
+    <result column="SENDPASS" property="sendpass" />
+    <result column="SERVER" property="server" />
+    <result column="PORT" property="port" />
+    <result column="ISSET" property="isset" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    USERID, SENDMAIL, SENDNAME, SENDPASS, SERVER, PORT, ISSET
+  </sql>
+
+  <select id="selectSettingByUserid" resultMap="BaseResultMap" parameterType="string">
+    SELECT <include refid="Base_Column_List"/>
+    FROM SETTING
+    WHERE USERID = #{userid}
+  </select>
+
+  <insert id="indexSetting" parameterType="com.amayadream.emailsystem.pojo.Setting" >
+    INSERT INTO SETTING (SENDMAIL, ISSET)
+    VALUES (#{sendmail}, #{isset})
+    WHERE USERID = #{userid}
+  </insert>
+
+  <update id="updateIsset" parameterType="com.amayadream.emailsystem.pojo.Setting">
+    UPDATE SETTING
+    SET ISSET = #{isset}
+    WHERE USERID = #{userid}
+  </update>
+
+  <update id="update" parameterType="com.amayadream.emailsystem.pojo.Setting">
+    UPDATE SETTING
+    SET SENDMAIL = #{sendmail}, SENDNAME = #{sendname}, SENDPASS = #{sendpass}, SERVER = #{server}, PORT = #{port}
+    WHERE USERID = #{userid}
+  </update>
+
+  <delete id="delete" parameterType="string" >
+    DELETE FROM SETTING
+    WHERE USERID = #{userid}
+  </delete>
+
+</mapper>

@@ -20,7 +20,7 @@ public interface IUserDao {
     public User count();
     public boolean insert(User user);
     public boolean update(User user);
-    public boolean updateLasttime(Map<String, Object> map);
-    public boolean updateAvailable(Map<String, Object> map);
-    public boolean delete(int id);
+    public boolean updateLasttime(User user);
+    public boolean updateAvailable(User user);
+    public boolean delete(String id);
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.emailsystem.dao.IUserDao" >
+
+  <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.User" >
+    <id column="ID" property="id" />
+    <result column="USERNAME" property="username" />
+    <result column="PASSWORD" property="password" />
+    <result column="EMAIL" property="email" />
+    <result column="FIRSTTIME" property="firsttime" />
+    <result column="LASTTIME" property="lasttime" />
+    <result column="AVAILABLE" property="available" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, USERNAME, PASSWORD, EMAIL, FIRSTTIME, LASTTIME, AVAILABLE
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT <include refid="Base_Column_List" />
+    FROM
+      (
+        SELECT A.*,ROWNUM RN
+        FROM (
+          SELECT * FROM USERS
+          ORDER BY ID DESC
+        ) A
+      )
+    WHERE RN BETWEEN #{startRow} AND #{endRow}
+  </select>
+
+  <select id="selectUserById" resultMap="BaseResultMap" parameterType="string" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM USERS
+    WHERE ID = #{id}
+  </select>
+
+  <select id="selectUserByUsername" resultMap="BaseResultMap" parameterType="string">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM USERS
+    WHERE USERNAME = #{username}
+  </select>
+
+  <select id="count" resultMap="BaseResultMap">
+    SELECT COUNT(ID) ID FROM USERS
+  </select>
+
+  <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.User" >
+    INSERT INTO USERS (ID, USERNAME, PASSWORD, EMAIL ,FIRSTTIME, LASTTIME AVAILABLE)
+    VALUES (sys_guid(), #{username}, #{password}, #{email}, #{firsttime}, #{lasttime}, #{available})
+  </insert>
+
+  <update id="updateLastTime" parameterType="com.amayadream.emailsystem.pojo.User">
+    UPDATE USERS
+    SET LASTTIME = #{lasttime}
+    WHERE USERNAME = #{username}
+  </update>
+
+  <update id="updateAvailable" parameterType="com.amayadream.emailsystem.pojo.User">
+    UPDATE USERS
+    SET AVAILABLE = #{available}
+    WHERE ID = #{id}
+  </update>
+
+  <update id="update" parameterType="com.amayadream.emailsystem.pojo.User">
+    UPDATE USERS
+      SET USERNAME = #{username}, PASSWORD = #{password}, EMAIL = #{email}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="string" >
+    DELETE FROM USERS
+    WHERE ID = #{id}
+  </delete>
+
+</mapper>

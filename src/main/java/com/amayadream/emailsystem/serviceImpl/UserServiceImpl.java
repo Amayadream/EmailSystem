@@ -59,31 +59,27 @@ public class UserServiceImpl implements IUserService {
         return userDao.insert(user);
     }
 
-    public boolean update(String id, String username, String password, String email, String lasttime, int available) {
+    public boolean update(String id, String username, String password, String email) {
         user.setId(id);
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setLasttime(lasttime);
-        user.setAvailable(available);
         return userDao.update(user);
     }
 
     public boolean updateLasttime(String id, String lasttime) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id",id);
-        map.put("lasttime",lasttime);
-        return userDao.updateLasttime(map);
+        user.setId(id);
+        user.setLasttime(lasttime);
+        return userDao.updateLasttime(user);
     }
 
     public boolean updateAvailable(String id, int available) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id",id);
-        map.put("available",available);
-        return userDao.updateAvailable(map);
+        user.setId(id);
+        user.setAvailable(available);
+        return userDao.updateAvailable(user);
     }
 
-    public boolean delete(int id) {
+    public boolean delete(String id) {
         return userDao.delete(id);
     }
 }
