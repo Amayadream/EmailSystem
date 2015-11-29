@@ -1,30 +1,29 @@
-package com.amayadream.email.controller;
+package com.amayadream.emailsystem.controller;
 
-import com.amayadream.email.pojo.User;
-import com.amayadream.email.service.IUserService;
-import com.amayadream.email.tools.getDate;
+import com.amayadream.emailsystem.pojo.User;
+import com.amayadream.emailsystem.service.IUserService;
+import com.amayadream.emailsystem.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
- * NAME   :  EmailSystem/com.amayadream.controller
+ * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
- * Date   :  2015.10.06 16:34
+ * Date   :  2015.11.28 00:39
  * TODO   :
  */
-
 @Controller
 @RequestMapping(value = "/user")
 public class LoginController {
     @Resource
     private IUserService userService;
 
-    @RequestMapping("/login")
-    public String login(String username,String password,HttpServletRequest request, RedirectAttributes redirectAttributes, getDate date){
+    @RequestMapping(value = "/login")
+    public String login(String username, String password, HttpSession session, RedirectAttributes redirectAttributes, DateUtil dateUtil){
         if(username == null || username.equals("")){
             redirectAttributes.addFlashAttribute("info", "账号不能为空!!!");
             return "redirect:/login";
@@ -34,7 +33,7 @@ public class LoginController {
             return "redirect:/login";
         }
         else{
-            User user = this.userService.queryUserByUsername(username);
+            User user = this.userService.selectUserByUsername(username);
 //            System.out.printf(user.username);
             if(user==null){
                 redirectAttributes.addFlashAttribute("info", "查无此账号!!!");
@@ -42,11 +41,11 @@ public class LoginController {
             }else{
                 if(user.getAvailable() == 1){
                     if(password.equals(user.getPassword())){
-                        String lasttime = date.getDateTime();
-                        this.userService.updateLastTime(lasttime,user.getUsername());
-                        request.getSession().setAttribute("loginStatus",true);
-                        request.getSession().setAttribute("username",user.getUsername());
-                        request.getSession().setAttribute("id",user.getId());
+                        String lasttime = dateUtil.getDateTime24();
+                        this.userService.updateLasttime(lasttime,user.getUsername());
+                        session.setAttribute("loginStatus",true);
+                        session.setAttribute("username",user.getUsername());
+                        session.setAttribute("userid",user.getId());
                         return "redirect:/index";
                     }
                     else{
@@ -62,11 +61,11 @@ public class LoginController {
     }
 
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request){
-//        request.getSession().removeAttribute(request.getSession().getAttributeNames().nextElement().toString());
-        request.getSession().removeAttribute("username");
-        request.getSession().removeAttribute("id");
-        request.getSession().removeAttribute("loginStatus");
+    public String logout(HttpSession session){
+        session.removeAttribute("username");
+        session.removeAttribute("id");
+        session.removeAttribute("loginStatus");
         return "redirect:/login";
     }
+
 }

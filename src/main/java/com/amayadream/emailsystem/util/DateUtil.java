@@ -23,7 +23,7 @@ public class DateUtil {
      * 按照yyyy-MM-dd获取日期,缺位补足(例如:2015-01-21)
      * @return 日期
      */
-    private static String getDateFull(){
+    public String getDateFull(){
         return year + "-" + (Integer.parseInt(month) < 10 ? ("0" + month) : month) + "-" + (Integer.parseInt(day) < 10 ? ("0" + day) : day);
     }
 
@@ -31,7 +31,7 @@ public class DateUtil {
      * 按照yyyy-MM-dd获取日期,不补足缺位(例如:2015-1-21)
      * @return 日期
      */
-    private static String getDateNotFull(){
+    public String getDateNotFull(){
         return year + "-" + month + "-" + day;
     }
 
@@ -39,7 +39,7 @@ public class DateUtil {
      * 按照yyyy-MM-dd HH:mm:ss,12小时制(例如:2015-01-21 PM 6:30:30)
      * @return 日期时间 12小时制
      */
-    private static String getDateTime12(){
+    public String getDateTime12(){
         return year + "-" + (Integer.parseInt(month) < 10 ? ("0" + month) : month) + "-" + (Integer.parseInt(day) < 10 ? ("0" + day) : day) + " "
                 + (Integer.parseInt(hour_12) < 10 ? ("PM " + hour_12) : ("AM " + hour_12)) + ":" + (Integer.parseInt(minute) < 10 ? ("0" + minute) : minute) + ":"
                 + (Integer.parseInt(second) < 10 ? ("0" + second) : second);
@@ -49,7 +49,7 @@ public class DateUtil {
      * 按照yyyy-MM-dd HH:mm:ss,24小时制(例如:2015-01-21 18:30:30)
      * @return 日期时间 24小时制
      */
-    private static String getDateTime24(){
+    public String getDateTime24(){
         return year + "-" + (Integer.parseInt(month) < 10 ? ("0" + month) : month) + "-" + (Integer.parseInt(day) < 10 ? ("0" + day) : day) + " "
                 + (Integer.parseInt(hour_24) < 10 ? ("0" + hour_24) : hour_24) + ":" + (Integer.parseInt(minute) < 10 ? ("0" + minute) : minute) + ":"
                 + (Integer.parseInt(second) < 10 ? ("0" + second) : second);
@@ -66,7 +66,7 @@ public class DateUtil {
      * 获取当前时间的时间戳
      * @return Unix时间戳
      */
-    public static Long getStamp(){
+    public Long getStamp(){
         return System.currentTimeMillis() / 1000;
     }
 
@@ -75,7 +75,7 @@ public class DateUtil {
      * @param timeStamp Unix时间戳
      * @return 日期时间(yyyy-MM-dd HH:mm:ss)
      */
-    public static String StampToDateTime(long timeStamp){
+    public String StampToDateTime(long timeStamp){
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timeStamp * 1000));
     }
 
@@ -84,7 +84,7 @@ public class DateUtil {
      * @param year 出生年份
      * @return 年龄
      */
-    public static int getAge(int year){
+    public int getAge(int year){
         return Integer.parseInt(getYear()) - year;
     }
 
@@ -92,7 +92,7 @@ public class DateUtil {
      * 获取 年
      * @return 年
      */
-    public static String getYear() {
+    public String getYear() {
         return year;
     }
 
@@ -100,7 +100,7 @@ public class DateUtil {
      * 获取 月(已修正)
      * @return 月
      */
-    public static String getMonth() {
+    public String getMonth() {
         return month;
     }
 
@@ -108,7 +108,7 @@ public class DateUtil {
      * 获取 日
      * @return 日
      */
-    public static String getDay() {
+    public String getDay() {
         return day;
     }
 
@@ -116,7 +116,7 @@ public class DateUtil {
      * 获取24小时制 时
      * @return 时(24小时制)
      */
-    public static String getHour_24() {
+    public String getHour_24() {
         return hour_24;
     }
 
@@ -124,7 +124,7 @@ public class DateUtil {
      * 获取12小时制 时
      * @return 时(12小时制)
      */
-    public static String getHour_12() {
+    public String getHour_12() {
         return hour_12;
     }
 
@@ -132,7 +132,7 @@ public class DateUtil {
      * 获取 分
      * @return 分
      */
-    public static String getMinute() {
+    public String getMinute() {
         return minute;
     }
 
@@ -140,7 +140,7 @@ public class DateUtil {
      * 获取 秒
      * @return 秒
      */
-    public static String getSecond() {
+    public String getSecond() {
         return second;
     }
 }

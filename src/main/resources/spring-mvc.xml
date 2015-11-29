@@ -11,7 +11,7 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">  
                         
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->  
-    <context:component-scan base-package="com.amayadream.email.controller" />
+    <context:component-scan base-package="com.amayadream.emailsystem.controller" />
     
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  
@@ -41,19 +41,18 @@
         <property name="suffix" value=".jsp" />  
     </bean>
 
-    <mvc:interceptors>
-        <!-- 登陆拦截器,负责拦截未登录的controller操作 -->
-        <mvc:interceptor>
-            <!-- 需要拦截的地址 -->
-            <mvc:mapping path="/**"/>
-            <!-- 需要排除拦截的地址 -->
-            <mvc:exclude-mapping path="/login.jsp"/>
-            <mvc:exclude-mapping path="/style/**"/>
-            <mvc:exclude-mapping path="/ueditor/**"/>
-            <bean id="loginInterceptor" class="com.amayadream.email.interceptor.LoginInterceptor"/>
-        </mvc:interceptor>
-
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash; 登陆拦截器,负责拦截未登录的controller操作 &ndash;&gt;-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash; 需要拦截的地址 &ndash;&gt;-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--&lt;!&ndash; 需要排除拦截的地址 &ndash;&gt;-->
+            <!--<mvc:exclude-mapping path="/login.jsp"/>-->
+            <!--<mvc:exclude-mapping path="/style/**"/>-->
+            <!--<mvc:exclude-mapping path="/ueditor/**"/>-->
+            <!--<bean id="loginInterceptor" class="com.amayadream.email.interceptor.LoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
 
     <mvc:annotation-driven/>
     

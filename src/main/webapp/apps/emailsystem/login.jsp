@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>登陆</title>
-  <script src="<%=path%>/style/js/jquery-2.1.4.min.js"></script>
-  <script src="<%=path%>/style/js/main.js"></script>
-  <link href="<%=path%>/style/css/login.css" rel='stylesheet' type='text/css' />
+  <title>登陆-电子邮件系统</title>
+  <link href="<%=path%>/static/css/login.css" rel='stylesheet' type='text/css' />
+  <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
+  <script src="<%=path%>/static/js/main.js"></script>
 </head>
 <body>
 
@@ -19,7 +19,7 @@
     <label class="lbl-3"></label>
   </div>
   <div class="clear"> </div>
-  <div class="avtar"><img src="<%=path%>/style/img/avtar.png" /></div>
+  <div class="avtar"><img src="<%=path%>/static/img/avtar.png" /></div>
   <form id="login-form" action="<%=path%>/user/login" method="post" onsubmit="return checkLoginForm()">
     <div class="key">
       <input type="text" id="username" name="username" placeholder="请输入账号" >

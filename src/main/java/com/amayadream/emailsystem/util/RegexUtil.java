@@ -1,4 +1,4 @@
-package com.amayadream.email.util;
+package com.amayadream.emailsystem.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Date   :  2015.10.08 14:33
  * TODO   :  正则验证用具类
  */
-public class Regex {
+public class RegexUtil {
     private final static String EMAIL_CHECK =  "^[A-Za-z0-9][\\w\\-\\.]{3,12}@([\\w\\-]+\\.)+[\\w]{2,3}$";
     private final static int[] sizeTable = { 9, 99, 999, 9999, 99999, 999999, 9999999,99999999, 999999999, Integer.MAX_VALUE };
 

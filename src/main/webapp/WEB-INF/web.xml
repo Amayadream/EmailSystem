@@ -24,15 +24,15 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- 登陆拦截器,针对jsp页面 -->
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>com.amayadream.email.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--&lt;!&ndash; 登陆拦截器,针对jsp页面 &ndash;&gt;-->
+    <!--<filter>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<filter-class>com.amayadream.emailsystem.filter.LoginFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
     <!-- Spring监听器 -->
     <listener>
@@ -74,7 +74,7 @@
     </error-page>
 
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>/</welcome-file>
     </welcome-file-list>
 
 </web-app>  

@@ -5,8 +5,8 @@
 <head>
   <meta charset="utf-8">
   <title>关于</title>
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/about.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/static/css/about.css">
 </head>
 <body data-spy="scroll" data-target="#myScrollspy">
 <nav class="navbar navbar-inverse" role="navigation">
@@ -117,8 +117,8 @@
 </div>
 
 
-<script src="<%=path%>/style/js/jquery-2.1.4.min.js"></script>
-<script src="<%=path%>/style/js/bootstrap.min.js"></script>
-<script src="<%=path%>/style/js/main.js"></script>
+<script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=path%>/static/js/main.js"></script>
 </body>
 </html>

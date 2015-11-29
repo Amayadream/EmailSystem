@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/bootstrap-table.css">
-  <script src="<%=path%>/style/js/jquery-2.1.4.min.js"></script>
-  <script src="<%=path%>/style/js/bootstrap.min.js"></script>
-  <script src="<%=path%>/style/js/bootstrap-table.js"></script>
-  <script src="<%=path%>/style/js/bootstrap-table-zh-CN.js"></script>
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap-table/css/bootstrap-table.css">
+  <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
+  <script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="<%=path%>/plugins/bootstrap-table/js/bootstrap-table.js"></script>
+  <script src="<%=path%>/plugins/bootstrap-table/js/bootstrap-table-zh-CN.js"></script>
 </head>
 
 <body>

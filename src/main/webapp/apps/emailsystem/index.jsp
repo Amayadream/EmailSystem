@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>收件箱</title>
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/sco.message.css">
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/scojs.css">
-  <link rel="stylesheet" type="text/css" href="<%=path%>/style/css/bootstrap-datetimepicker.min.css">
+  <title>收件箱-电子邮件系统</title>
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/scojs.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -252,15 +252,15 @@
 </div><!-- /.modal -->
 
 
-<script src="<%=path%>/style/js/jquery-2.1.4.min.js"></script>
-<script src="<%=path%>/style/js/bootstrap.min.js"></script>
-<script src="<%=path%>/style/js/main.js"></script>
-<script src="<%=path%>/style/js/bootstrap-datetimepicker.js"></script>
-<script src="<%=path%>/style/js/bootstrap-datetimepicker.zh-CN.js"></script>
-<script src="<%=path%>/ueditor/ueditor.config.js"></script>
-<script src="<%=path%>/ueditor/ueditor.all.js"></script>
-<script src="<%=path%>/style/js/sco.message.js"></script>
-<script src="<%=path%>/style/js/sco.modal.js"></script>
+<script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=path%>/static/js/main.js"></script>
+<script src="<%=path%>/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="<%=path%>/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="<%=path%>/plugins/ueditor/ueditor.config.js"></script>
+<script src="<%=path%>/plugins/ueditor/ueditor.all.js"></script>
+<script src="<%=path%>/plugins/scojs/js/sco.message.js"></script>
+<script src="<%=path%>/plugins/scojs/js/sco.modal.js"></script>
 
 <script type="text/javascript">
   if("${INFO}"){
@@ -271,7 +271,6 @@
   }
 
   var ue = UE.getEditor("editor");
-
   $('#addemail').click(function() {
     $('#content').slideToggle('fast');
     return false;

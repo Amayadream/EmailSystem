@@ -1,68 +1,69 @@
-package com.amayadream.email.controller;
+package com.amayadream.emailsystem.controller;
 
-import org.apache.ibatis.annotations.ResultMap;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * NAME   :  EmailSystem/com.amayadream.controller
+ * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
- * Date   :  2015.10.07 17:50
+ * Date   :  2015.11.28 15:35
  * TODO   :
  */
-
 @Controller
-//@RequestMapping("Email")
-public class PageController {
+public class RouteController {
+
+    @RequestMapping("/")
+    public String indexPage(){
+        return "apps/emailsystem/login";
+    }
 
     @RequestMapping("login")
     public String login(){
-        return "login";
+        return "apps/emailsystem/login";
     }
 
     @RequestMapping("index")
     public String index(){
-        return "index";
+        return "apps/emailsystem/index";
     }
 
     @RequestMapping("receiver")
     public String receiver(){
-        return "receiver";
+        return "apps/emailsystem/receiver";
     }
 
     @RequestMapping("contact")
     public String contact(){
-        return "contact";
+        return "apps/emailsystem/contact";
     }
 
     @RequestMapping("groups")
     public String groups(){
-        return "groups";
+        return "apps/emailsystem/groups";
     }
 
     @RequestMapping("setting")
     public String setting(){
-        return "setting";
+        return "apps/emailsystem/setting";
     }
 
     @RequestMapping("othersetting")
     public String othersetting(){
-        return "othersetting";
+        return "apps/emailsystem/othersetting";
     }
 
     @RequestMapping("about")
     public String about(){
-        return "about";
+        return "apps/emailsystem/about";
     }
 
     @RequestMapping("view")
     public String view(){
-        return "view";
+        return "apps/emailsystem/view";
     }
 
     @RequestMapping("test")
     public String test(){
-        return "test";
+        return "apps/emailsystem/test";
     }
 }
