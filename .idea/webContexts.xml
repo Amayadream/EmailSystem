@@ -4,6 +4,7 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/apps/emailsystem/index.jsp" value="file://$PROJECT_DIR$/src/main/webapp/apps/emailsystem" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/apps/emailsystem/setting.jsp" value="file://$PROJECT_DIR$/src/main/webapp/apps/emailsystem" />
       </map>
     </option>
   </component>

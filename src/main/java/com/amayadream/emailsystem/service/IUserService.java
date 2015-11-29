@@ -18,7 +18,7 @@ public interface IUserService {
     public User count();
     public boolean insert(String username, String password, String email, String firsttime, String lasttime,int available);
     public boolean update(String id, String username, String password, String email);
-    public boolean updateLasttime(String id, String lasttime);
+    public boolean updateLasttime(String username, String lasttime);
     public boolean updateAvailable(String id, int available);
     public boolean delete(String id);
 }

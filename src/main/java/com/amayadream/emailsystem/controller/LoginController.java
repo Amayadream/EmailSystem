@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     @Resource
     private IUserService userService;
+    @Resource
+    private User user;
 
     @RequestMapping(value = "/login")
     public String login(String username, String password, HttpSession session, RedirectAttributes redirectAttributes, DateUtil dateUtil){
@@ -33,16 +35,14 @@ public class LoginController {
             return "redirect:/login";
         }
         else{
-            User user = this.userService.selectUserByUsername(username);
-//            System.out.printf(user.username);
+            User user = userService.selectUserByUsername(username);
             if(user==null){
                 redirectAttributes.addFlashAttribute("info", "查无此账号!!!");
                 return "redirect:/login";
             }else{
                 if(user.getAvailable() == 1){
                     if(password.equals(user.getPassword())){
-                        String lasttime = dateUtil.getDateTime24();
-                        this.userService.updateLasttime(lasttime,user.getUsername());
+                        userService.updateLasttime(user.getUsername(),dateUtil.getDateTime24());
                         session.setAttribute("loginStatus",true);
                         session.setAttribute("username",user.getUsername());
                         session.setAttribute("userid",user.getId());

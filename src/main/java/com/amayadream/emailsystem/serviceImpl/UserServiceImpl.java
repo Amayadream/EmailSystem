@@ -67,8 +67,8 @@ public class UserServiceImpl implements IUserService {
         return userDao.update(user);
     }
 
-    public boolean updateLasttime(String id, String lasttime) {
-        user.setId(id);
+    public boolean updateLasttime(String username, String lasttime) {
+        user.setUsername(username);
         user.setLasttime(lasttime);
         return userDao.updateLasttime(user);
     }

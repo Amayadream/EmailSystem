@@ -37,13 +37,16 @@ public class SettingController {
     public String edit(@ModelAttribute("userid") String userid, String sendmail, String sendname, String sendpass, RegexUtil regexUtil,
                        String server, String port, RedirectAttributes redirectAttributes){
         if(regexUtil.checkEmail(sendmail)){
-            this.settingService.update(userid, sendmail, sendname, sendpass, server, port);
-            this.settingService.updateIsset(userid,1);
-            redirectAttributes.addFlashAttribute("INFO","修改成功!");
-            return "redirect:/setting";
+            boolean flag = settingService.update(userid, sendmail, sendname, sendpass, server, port);
+            if(flag){
+                settingService.updateIsset(userid,1);
+                redirectAttributes.addFlashAttribute("INFO","修改成功!");
+            }else{
+                redirectAttributes.addFlashAttribute("ERROR","修改失败,请重试!");
+            }
         }else{
             redirectAttributes.addFlashAttribute("INFO","邮箱格式不正确!");
-            return "redirect:/setting";
         }
+        return "redirect:/setting";
     }
 }

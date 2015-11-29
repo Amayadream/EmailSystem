@@ -16,7 +16,7 @@
       (
         SELECT A.*,ROWNUM RN
         FROM (
-          SELECT * FROM GROUP
+          SELECT * FROM GROUPS
           WHERE USERID = #{userid}
           ORDER BY GID DESC
         ) A

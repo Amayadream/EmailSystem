@@ -35,7 +35,7 @@ public class UserController {
         int pageSize = 2;
         User user = userService.count();
         int rowCount = Integer.parseInt(user.getId());
-        List<User> list = this.userService.selectAll(pageNo, pageSize);
+        List<User> list = userService.selectAll(pageNo, pageSize);
         if(rowCount%pageSize!=0){
             rowCount = rowCount/pageSize+1;
         }
@@ -66,37 +66,35 @@ public class UserController {
         String firsttime = dateUtil.getDateTime24();
         if(username == null || username.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","用户名不能为空!");
-            return "redirect:/index";
         }else{
             if(username.length() < 2){
                 redirectAttributes.addFlashAttribute("ERROR","用户名过短!");
-                return "redirect:/index";
             }else{
                 if(password1 == null || password1.equals("")){
                     redirectAttributes.addFlashAttribute("ERROR","密码不能为空!");
-                    return "redirect:/index";
                 }else{
                     if(password1.length() < 5){
                         redirectAttributes.addFlashAttribute("ERROR","密码过短!");
-                        return "redirect:/index";
                     }else{
                         if(!password2.equals(password1)){
                             redirectAttributes.addFlashAttribute("ERROR","两次密码不一致!");
-                            return "redirect:/index";
                         }else{
                             if(!regexUtil.checkEmail(email)){
                                 redirectAttributes.addFlashAttribute("ERROR","邮箱格式不正确!");
-                                return "redirect:/index";
                             }else {
-                                this.userService.insert(username, password1, email, firsttime, firsttime, 1);
-                                redirectAttributes.addFlashAttribute("INFO","成功添加"+ username +"用户!");
-                                return "redirect:/index";
+                                boolean flag = userService.insert(username, password1, email, firsttime, firsttime, 1);
+                                if(flag){
+                                    redirectAttributes.addFlashAttribute("INFO","成功添加"+ username +"用户!");
+                                }else{
+                                    redirectAttributes.addFlashAttribute("ERROR","添加失败,请重试!");
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        return "redirect:/index";
     }
 
 }

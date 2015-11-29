@@ -122,8 +122,8 @@ function checkSettingEditForm(){
 	var sendmail = $("#sendmail").val();
 	var sendname = $("#sendname").val();
 	var sendpass = $("#sendpass").val();
-	var smtpserver = $("#smtpserver").val();
-	var smtpport = $("#smtpport").val();
+	var server = $("#server").val();
+	var port = $("#port").val();
 	var reg_email = /^[A-Za-z0-9][\w\-\.]{3,12}@([\w\-]+\.)+[\w]{2,3}$/;
 	var reg_number = /^[0-9]+.[0-9]*$/;
 	if(!reg_email.test(sendmail)){
@@ -142,11 +142,11 @@ function checkSettingEditForm(){
 		$.scojs_message("发信密码不能为空!", $.scojs_message.TYPE_ERROR);
 		return false;
 	}
-	if(smtpserver == null || smtpserver == ""){
+	if(server == null || server == ""){
 		$.scojs_message("smtp服务器不能为空!", $.scojs_message.TYPE_ERROR);
 		return false;
 	}
-	if(!reg_number.test(smtpport)){
+	if(!reg_number.test(port)){
 		$.scojs_message("smtp端口不符合规则!", $.scojs_message.TYPE_ERROR);
 		return false;
 	}
@@ -168,8 +168,8 @@ function showSetting(){
 				$("#sendmail").val(obj.sendmail);
 				$("#sendname").val(obj.sendname);
 				$("#sendpass").val(obj.sendpass);
-				$("#smtpserver").val(obj.smtpserver);
-				$("#smtpport").val(obj.smtpport);
+				$("#server").val(obj.server);
+				$("#port").val(obj.port);
 			}else{
 				$.scojs_message("未知错误,无法加载设置!", $.scojs_message.TYPE_ERROR);
 			}

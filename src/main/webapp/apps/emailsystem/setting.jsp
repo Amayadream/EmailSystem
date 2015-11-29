@@ -88,15 +88,15 @@
           </div>
         </div>
         <div class="control-group">
-          <label for="smtpserver" class="control-label">SMTP服务器</label>
+          <label for="server" class="control-label">SMTP服务器</label>
           <div class="controls">
-            <input type="text" class="form-control" placeholder="格式为smtp.xx.com" name="smtpserver" id="smtpserver">
+            <input type="text" class="form-control" placeholder="格式为smtp.xx.com" name="server" id="server">
           </div>
         </div>
         <div class="control-group">
-          <label for="smtpport" class="control-label">SMTP端口</label>
+          <label for="port" class="control-label">SMTP端口</label>
           <div class="controls">
-            <input type="text" class="form-control" placeholder="默认为25" name="smtpport" id="smtpport">
+            <input type="text" class="form-control" placeholder="默认为25" name="port" id="port">
           </div>
         </div>
 
