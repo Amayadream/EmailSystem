@@ -5,10 +5,12 @@ import com.amayadream.emailsystem.pojo.Contact;
 import com.amayadream.emailsystem.service.IContactService;
 import com.amayadream.emailsystem.util.RegexUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,23 +30,13 @@ public class ContactController {
     @Resource
     private Contact contact;
 
-    @RequestMapping(value = "all", produces = "application/json;charset=utf-8")
-    @ResponseBody
-    public String all(@ModelAttribute("userid") String userid, int pageNo, Map map){
-        int pageSize = 10;
-        Contact contact = contactService.count(userid);
-        int rowCount = Integer.parseInt(contact.getCid());
+    @RequestMapping(value = "all/{pageNo}", produces = "application/json;charset=utf-8")
+    public String all(Model model, @ModelAttribute("userid") String userid, @PathVariable("pageNo") int pageNo){
+        Map<String, Object> map = new HashMap<String, Object>();
+        int pageSize = 2;
         List<Contact> list = contactService.selectAll(pageNo, pageSize, userid);
-        if(rowCount%pageSize!=0){
-            rowCount = rowCount/pageSize+1;
-        }
-        else{
-            rowCount = rowCount/pageSize;
-        }
-        map.put("pageCount", rowCount);
-        map.put("CurrentPage", pageNo);
-        map.put("list", list);
-        return JSON.toJSONString(map);
+        model.addAttribute("result",list);
+        return "apps/emailsystem/contact";
     }
 
     @RequestMapping(value = "id", produces = "application/json;charset=UTF-8")

@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%String path = request.getContextPath();%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,44 +142,27 @@
         </div>
       </div>
 
-      <table class="table">
+      <table class="table table-striped">
+        <th>#</th>
         <th>姓名</th>
         <th>邮箱</th>
         <th>分组</th>
         <th>交互</th>
         <th width="10%">操作</th>
+        <c:forEach items="${result}" var="contact" varStatus="status">
         <tr>
-          <td>Amayadream</td>
-          <td>524806599@qq.com</td>
-          <td>朋友</td>
-          <td><span class="label label-success">5</span></td>
+          <td>${status.index + 1}</td>
+          <td>${contact.name}</td>
+          <td>${contact.email}</td>
+          <td>${contact.groupid}</td>
           <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#edit-model">
-                    <span class="glyphicon glyphicon-edit"></span> 编辑
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="" data-toggle="modal" data-target="#deleteModel">
-                    <span class="glyphicon glyphicon-trash"></span> 删除
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <c:if test="${not empty contact.name}">
+              <span class="label label-success">5</span>
+            </c:if>
+            <c:if test="${empty contact.name}">
+              <span class="label label-default">5</span>
+            </c:if>
           </td>
-        </tr>
-        <tr>
-          <td>Jack</td>
-          <td>13638040@qq.com</td>
-          <td>同事</td>
-          <td><span class="label label-default">0</span></td>
           <td>
             <div class="btn-group">
               <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -201,6 +185,7 @@
             </div>
           </td>
         </tr>
+        </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
   </div>	<!-- container end -->
