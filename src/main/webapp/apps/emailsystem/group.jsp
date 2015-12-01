@@ -65,7 +65,7 @@
   </div>
 
   <div id="content" class="col-md-12" style="display:none;margin-bottom: 50px">
-    <form class="col-md-5 well general" action="groups/add" method="post" onsubmit="return checkGroupsAddForm();">
+    <form class="col-md-5 well general" action="<%=path%>/group/add" method="post" onsubmit="return checkGroupsAddForm();">
       <div class="col-md-12">
         <label for="add-name">分组名</label>
         <input type="text" class="form-control" id="add-name" name="name" placeholder="这里输入分组名">
@@ -79,7 +79,7 @@
   <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
       <li><a href="<%=path%>/contact">联系人</a></li>
-      <li class="active"><a href="<%=path%>/groups">分组</a></li>
+      <li class="active"><a href="<%=path%>/group">分组</a></li>
     </ul>
   </div>
 
@@ -126,10 +126,10 @@
             <td>${status.index + 1}</td>
             <td>${group.groupname}</td>
             <td>
-              <c:if test="${not empty group.count}">
+              <c:if test="${group.count != 0}">
                 <span class="label label-success">${group.count}</span>
               </c:if>
-              <c:if test="${empty group.count}">
+              <c:if test="${group.count == 0}">
                 <span class="label label-default">${group.count}</span>
               </c:if>
             </td>
@@ -140,22 +140,14 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li>
-                    <a href="#" data-toggle="modal" data-target="#edit-model">
-                      <span class="glyphicon glyphicon-edit"></span> 编辑
-                    </a>
-                  </li>
+                  <li><a href="#" onclick="javascript:updateGroup('${group.gid}')"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>
                   <li>
                     <a href="#" data-toggle="modal" data-target="#search-model">
                       <span class="glyphicon glyphicon-search"></span> 查看
                     </a>
                   </li>
                   <li class="divider"></li>
-                  <li>
-                    <a href="#" data-toggle="modal" data-target="#delete-model">
-                      <span class="glyphicon glyphicon-trash"></span> 删除
-                    </a>
-                  </li>
+                  <li><a href="#" onclick="javascript:deleteGroup('${group.gid}')"><span class="glyphicon glyphicon-trash"></span> 删除</a></li>
                 </ul>
               </div>
             </td>
@@ -176,7 +168,8 @@
           <span class="glyphicon glyphicon-edit"></span> 编辑
         </h4>
       </div>
-      <form action="groups/edit" method="post" onsubmit="return checkGroupsEditForm();">
+      <form action="<%=path%>/group/edit" method="post" onsubmit="return checkGroupsEditForm();">
+        <input type="hidden" id="edit-id" name="id">
         <div class="modal-body">
           <div>
             <label for="edit-name">分组名</label>
@@ -206,8 +199,11 @@
         确认删除这个分组吗?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> 确认</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 关闭</button>
+        <form action="<%=path%>/group/delete" method="post">
+          <input type="hidden" id="delete-id" name="id">
+          <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> 确认</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 关闭</button>
+        </form>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -274,6 +270,22 @@
       return false;
     });
   });
+
+  function updateGroup(id){
+    $.getJSON('<%=path%>/group/id',{id : id},function(data){
+      $("#edit-id").val(data.gid);
+      $("#edit-name").val(data.groupname);
+    });
+    $("#edit-model").modal({
+      keyboard : true
+    });
+  }
+  function deleteGroup(id){
+    $("#delete-id").val(id);
+    $("#delete-model").modal({
+      keyboard : true
+    });
+  }
 
 </script>
 </body>

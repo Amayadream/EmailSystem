@@ -96,7 +96,7 @@
   <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
       <li class="active"><a href="<%=path%>/contact">联系人</a></li>
-      <li><a href="<%=path%>/groups">分组</a></li>
+      <li><a href="<%=path%>/group">分组</a></li>
     </ul>
   </div>
 

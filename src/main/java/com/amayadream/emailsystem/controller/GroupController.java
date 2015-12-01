@@ -32,17 +32,17 @@ public class GroupController {
         int pageSize = 10;
         List<Group> list = groupService.selectAll(userid, pageNo, pageSize);
         model.addAttribute("result",list);
-        return "apps/emailsystem/groups";
+        return "apps/emailsystem/group";
     }
 
     @RequestMapping(value = "id", produces = "application/json;charset=utf-8")
     @ResponseBody
-    public Group id(@RequestParam("id") String gid, @ModelAttribute("id") String userid){
+    public Group id(@RequestParam("id") String gid, @ModelAttribute("userid") String userid){
         return groupService.selectGroupById(userid, gid);
     }
 
     @RequestMapping("add")
-    public String add(@RequestParam("name") String groupname, @ModelAttribute("id") String userid, RedirectAttributes redirectAttributes){
+    public String add(@RequestParam("name") String groupname, @ModelAttribute("userid") String userid, RedirectAttributes redirectAttributes){
         if(groupname == null || groupname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","分组名不能为空!");
         }else{
@@ -66,7 +66,7 @@ public class GroupController {
     }
 
     @RequestMapping("edit")
-    public String edit(@RequestParam("name") String groupname,@RequestParam("id") String gid, @ModelAttribute("id") String userid, RedirectAttributes redirectAttributes, Map map){
+    public String edit(@RequestParam("name") String groupname,@RequestParam("id") String gid, @ModelAttribute("userid") String userid, RedirectAttributes redirectAttributes, Map map){
         if(groupname == null || groupname.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","分组名不能为空,请重新输入!");
         }else{
@@ -90,7 +90,7 @@ public class GroupController {
     }
 
     @RequestMapping("delete")
-    public String delete(@RequestParam("id") String gid, @ModelAttribute("id") String userid, RedirectAttributes redirectAttributes){
+    public String delete(@RequestParam("id") String gid, @ModelAttribute("userid") String userid, RedirectAttributes redirectAttributes){
         Group group = groupService.selectGroupById(userid, gid);
         if(group == null){
             redirectAttributes.addFlashAttribute("ERROR","该分组不存在!");

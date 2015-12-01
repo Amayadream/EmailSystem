@@ -50,7 +50,7 @@
 
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Group">
     UPDATE GROUPS
-    SET GROUPNAME = #{gname}
+    SET GROUPNAME = #{groupname}
     WHERE GID = #{gid} AND USERID = #{userid}
   </update>
 
