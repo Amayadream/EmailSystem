@@ -14,7 +14,6 @@
   <style>
     .table th,.table td {
       text-align: center;
-      height:38px;
     }
   </style>
 </head>

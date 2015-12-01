@@ -8,6 +8,11 @@
   <title>通讯录</title>
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
+  <style>
+    .table th,.table td {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
