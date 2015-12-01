@@ -32,16 +32,6 @@ public class RouteController {
         return "apps/emailsystem/receiver";
     }
 
-    @RequestMapping("contact")
-    public String contact(){
-        return "apps/emailsystem/contact";
-    }
-
-    @RequestMapping("groups")
-    public String groups(){
-        return "apps/emailsystem/groups";
-    }
-
     @RequestMapping("setting")
     public String setting(){
         return "apps/emailsystem/setting";

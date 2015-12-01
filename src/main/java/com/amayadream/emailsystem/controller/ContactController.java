@@ -30,10 +30,9 @@ public class ContactController {
     @Resource
     private Contact contact;
 
-    @RequestMapping(value = "all/{pageNo}", produces = "application/json;charset=utf-8")
-    public String all(Model model, @ModelAttribute("userid") String userid, @PathVariable("pageNo") int pageNo){
-        Map<String, Object> map = new HashMap<String, Object>();
-        int pageSize = 2;
+    @RequestMapping(value = "", produces = "application/json;charset=utf-8")
+    public String all(Model model, @ModelAttribute("userid") String userid,@RequestParam(value = "page", defaultValue = "1") int pageNo){
+        int pageSize = 10;
         List<Contact> list = contactService.selectAll(pageNo, pageSize, userid);
         model.addAttribute("result",list);
         return "apps/emailsystem/contact";
@@ -95,15 +94,15 @@ public class ContactController {
                     if(regexUtil.checkEmail(email)){
                         boolean flag = contactService.update(cid, userid, name, email, groupid);
                         if(flag){
-                            redirectAttributes.addFlashAttribute("INFO","编辑" + name + "成功!");
+                            redirectAttributes.addFlashAttribute("INFO","编辑[" + name + "]成功!");
                         }else{
                             redirectAttributes.addFlashAttribute("ERROR","未知原因导致添加失败,请重试");
                         }
                     }else{
-                        redirectAttributes.addFlashAttribute("ERROR","邮箱" + email + "不符合规则,请重新输入!");
+                        redirectAttributes.addFlashAttribute("ERROR","邮箱[" + email + "]不符合规则,请重新输入!");
                     }
                 }else {
-                    redirectAttributes.addFlashAttribute("ERROR","联系人" + name + "已存在!");
+                    redirectAttributes.addFlashAttribute("ERROR","联系人[" + name + "]已存在!");
                 }
             }
         }
@@ -111,7 +110,7 @@ public class ContactController {
     }
 
     @RequestMapping("/delete")
-    public String delete(@RequestParam("id") String cid, @ModelAttribute("id") String userid, RedirectAttributes redirectAttributes){
+    public String delete(@RequestParam("id") String cid, @ModelAttribute("userid") String userid, RedirectAttributes redirectAttributes){
         if(contactService.selectContactById(cid, userid) == null){
             redirectAttributes.addFlashAttribute("ERROR","此联系人不存在!");
         }else{

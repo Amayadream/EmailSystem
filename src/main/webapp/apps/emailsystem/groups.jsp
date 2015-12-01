@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String path = request.getContextPath();%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,69 +117,50 @@
       </div>
 
       <table class="table">
+        <th>#</th>
         <th>分组名</th>
         <th>组员数</th>
         <th width="10%">操作</th>
-        <tr>
-          <td>朋友</td>
-          <td><span class="label label-success">5</span></td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#edit-model">
-                    <span class="glyphicon glyphicon-edit"></span> 编辑
-                  </a>
-                </li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#search-model">
-                    <span class="glyphicon glyphicon-search"></span> 查看
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#delete-model">
-                    <span class="glyphicon glyphicon-trash"></span> 删除
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>同事</td>
-          <td><span class="label label-default">0</span></td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#edit-model">
-                    <span class="glyphicon glyphicon-edit"></span> 编辑
-                  </a>
-                </li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#search-model">
-                    <span class="glyphicon glyphicon-search"></span> 查看
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#delete-model">
-                    <span class="glyphicon glyphicon-trash"></span> 删除
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
+        <c:forEach items="${result}" var="group" varStatus="status">
+          <tr>
+            <td>${status.index + 1}</td>
+            <td>${group.groupname}</td>
+            <td>
+              <c:if test="${not empty group.count}">
+                <span class="label label-success">${group.count}</span>
+              </c:if>
+              <c:if test="${empty group.count}">
+                <span class="label label-default">${group.count}</span>
+              </c:if>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#edit-model">
+                      <span class="glyphicon glyphicon-edit"></span> 编辑
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#search-model">
+                      <span class="glyphicon glyphicon-search"></span> 查看
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#delete-model">
+                      <span class="glyphicon glyphicon-trash"></span> 删除
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
   </div>	<!-- container end -->

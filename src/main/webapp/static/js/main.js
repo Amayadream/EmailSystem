@@ -44,10 +44,7 @@ function isNull(input){
 
 function checkContactAddForm(){
 	var name = $("#add-name").val();
-	var email = $("#add-email").val();
-	var groups = $("#add-groups").val();
 	var reg_email = /^[A-Za-z0-9][\w\-\.]{3,12}@([\w\-]+\.)+[\w]{2,3}$/;
-	var reg_number = /^[1-9][0-9]*$/;
 	if(name == null || name == ""){
 		$.scojs_message("姓名不能为空,请重新输入!", $.scojs_message.TYPE_ERROR);
 		return false;
@@ -58,10 +55,6 @@ function checkContactAddForm(){
 	}
 	if(!reg_email.test(email)){
 		$.scojs_message("邮箱格式错误,请重新输入!", $.scojs_message.TYPE_ERROR);
-		return false;
-	}
-	if(!reg_number.test(groups)){
-		$.scojs_message("分组格式有误,请重新输入!", $.scojs_message.TYPE_ERROR);
 		return false;
 	}
 	return true;
@@ -85,10 +78,10 @@ function checkContactEditForm(){
 		$.scojs_message("邮箱格式错误,请重新输入!", $.scojs_message.TYPE_ERROR);
 		return false;
 	}
-	if(!reg_number.test(groups)){
-		$.scojs_message("分组格式有误,请重新输入!", $.scojs_message.TYPE_ERROR);
-		return false;
-	}
+	//if(!reg_number.test(groups)){
+	//	$.scojs_message("分组格式有误,请重新输入!", $.scojs_message.TYPE_ERROR);
+	//	return false;
+	//}
 	return true;
 }
 
@@ -172,26 +165,6 @@ function showSetting(){
 				$("#port").val(obj.port);
 			}else{
 				$.scojs_message("未知错误,无法加载设置!", $.scojs_message.TYPE_ERROR);
-			}
-		}
-	});
-}
-
-function showContactor(){
-	$.ajax({
-		url : 'contact/all',
-		datatype : 'json',
-		type : 'post',
-		data : {
-			page : 1
-		},
-		beforeSend : function(){
-
-		},
-		success : function(data){
-			if(data != null){
-				var obj = eval(data);
-				console.log(obj);
 			}
 		}
 	});

@@ -10,9 +10,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("group")
 public class Group {
-    private String gid;
-    private String userid;
-    private String groupname;
+    private String gid;         //分组编号
+    private String userid;      //用户编号
+    private String groupname;   //分组名称
+
+    // -- 临时属性 -- //
+    private int count;          //组员数
 
     public String getGid() {
         return gid;
@@ -36,5 +39,13 @@ public class Group {
 
     public void setGroupname(String groupname) {
         this.groupname = groupname;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

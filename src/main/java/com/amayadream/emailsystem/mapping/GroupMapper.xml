@@ -12,13 +12,14 @@
   </sql>
 
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
-    SELECT <include refid="Base_Column_List" /> FROM
+    SELECT * FROM
       (
         SELECT A.*,ROWNUM RN
         FROM (
-          SELECT * FROM GROUPS
-          WHERE USERID = #{userid}
-          ORDER BY GID DESC
+          SELECT DISTINCT A.*, (SELECT COUNT(*) FROM CONTACT WHERE GROUPID = A.GID) COUNT
+          FROM GROUPS A JOIN CONTACT B ON A.USERID = B.USERID
+          WHERE A.USERID = #{userid}
+          ORDER BY A.GID DESC
         ) A
       )
     WHERE RN BETWEEN #{startRow} AND #{endRow}

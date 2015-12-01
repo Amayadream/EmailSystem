@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.Group;
 import com.amayadream.emailsystem.service.IGroupService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,23 +27,12 @@ public class GroupController {
     @Resource
     private Group group;
 
-    @RequestMapping(value = "/all", produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String show(@ModelAttribute("userid") String userid, int pageNo, Map<String, Object> map){
-        int pageSize = 2;
-        Group group = groupService.count(userid);
-        int rowCount = Integer.parseInt(group.getGid());
+    @RequestMapping(value = "", produces = "application/json;charset=utf-8")
+    public String show(@ModelAttribute("userid") String userid, @RequestParam(value = "page", defaultValue = "1") int pageNo, Model model){
+        int pageSize = 10;
         List<Group> list = groupService.selectAll(userid, pageNo, pageSize);
-        if(rowCount%pageSize!=0){
-            rowCount = rowCount/pageSize+1;
-        }
-        else{
-            rowCount = rowCount/pageSize;
-        }
-        map.put("pageCount", rowCount);
-        map.put("CurrentPage", pageNo);
-        map.put("list", list);
-        return JSON.toJSONString(map);
+        model.addAttribute("result",list);
+        return "apps/emailsystem/groups";
     }
 
     @RequestMapping(value = "id", produces = "application/json;charset=utf-8")
