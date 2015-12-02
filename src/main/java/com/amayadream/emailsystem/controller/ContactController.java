@@ -3,6 +3,8 @@ package com.amayadream.emailsystem.controller;
 import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.Contact;
 import com.amayadream.emailsystem.service.IContactService;
+import com.amayadream.emailsystem.util.Page;
+import com.amayadream.emailsystem.util.PageUtil;
 import com.amayadream.emailsystem.util.RegexUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +34,14 @@ public class ContactController {
     private Contact contact;
 
     @RequestMapping(value = "", produces = "application/json;charset=utf-8")
-    public String all(Model model, @ModelAttribute("userid") String userid,@RequestParam(value = "page", defaultValue = "1") int pageNo){
-        int pageSize = 10;
-        List<Contact> list = contactService.selectAll(pageNo, pageSize, userid);
-        model.addAttribute("result",list);
+    public String all(Model model, @ModelAttribute("userid") String userid, HttpServletRequest request){
+        Page<Contact> page = new Page<Contact>(PageUtil.PAGE_SIZE);
+        int[] pageParams = PageUtil.init(page, request);
+        List<Contact> list = contactService.selectAll(pageParams[0],pageParams[1],userid);
+        int count = Integer.parseInt(contactService.count(userid).getCid());
+        page.setTotalCount(count);
+        page.setResult(list);
+        model.addAttribute("page",page);
         return "apps/emailsystem/contact";
     }
 

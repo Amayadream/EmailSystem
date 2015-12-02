@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String path = request.getContextPath();%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
   <title>通讯录</title>
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/static/css/pagination.css">
   <style>
     .table th,.table td {
       text-align: center;
@@ -126,7 +128,7 @@
         <th>分组名</th>
         <th>组员数</th>
         <th width="10%">操作</th>
-        <c:forEach items="${result}" var="group" varStatus="status">
+        <c:forEach items="${page.result}" var="group" varStatus="status">
           <tr>
             <td>${status.index + 1}</td>
             <td>${group.groupname}</td>
@@ -160,6 +162,9 @@
         </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
+    <div style="text-align:center">
+      <tags:pagination page="${page}" paginationSize="${page.pageSize}"/>
+    </div>
   </div>	<!-- container end -->
 </div>	<!-- col end -->
 

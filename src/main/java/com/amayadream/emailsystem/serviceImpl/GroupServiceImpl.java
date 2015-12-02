@@ -23,17 +23,11 @@ public class GroupServiceImpl implements IGroupService {
     @Resource
     private Group group;
 
-    public List<Group> selectAll(String userid, int pageNo, int pageSize) {
+    public List<Group> selectAll(int startRow, int endRow, String userid) {
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("startRow",startRow);
+        map.put("endRow",endRow);
         map.put("userid",userid);
-        if(pageNo==1){
-            map.put("startRow", 1);
-            map.put("endRow", pageSize);
-        }
-        else{
-            map.put("startRow", pageSize*(pageNo-1)+1);
-            map.put("endRow", pageSize*pageNo);
-        }
         return groupDao.selectAll(map);
     }
 

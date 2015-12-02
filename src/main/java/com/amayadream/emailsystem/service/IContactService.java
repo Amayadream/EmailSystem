@@ -12,7 +12,7 @@ import java.util.Map;
  * TODO   :
  */
 public interface IContactService {
-    public List<Contact> selectAll(int pageNo, int pageSize, String userid);
+    public List<Contact> selectAll(int startRow, int endRow, String userid);
 
     public Contact selectContactById(String cid, String userid);
 

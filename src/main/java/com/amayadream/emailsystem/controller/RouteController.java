@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RouteController {
 
-    @RequestMapping("/")
-    public String indexPage(){
-        return "apps/emailsystem/login";
-    }
-
     @RequestMapping("login")
     public String login(){
         return "apps/emailsystem/login";

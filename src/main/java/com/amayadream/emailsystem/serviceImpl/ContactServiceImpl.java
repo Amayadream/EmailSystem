@@ -24,17 +24,11 @@ public class ContactServiceImpl implements IContactService {
     @Resource
     private Contact contact;
 
-    public List<Contact> selectAll(int pageNo, int pageSize, String userid) {
+    public List<Contact> selectAll(int startRow, int endRow, String userid) {
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("startRow",startRow);
+        map.put("endRow",endRow);
         map.put("userid",userid);
-        if(pageNo==1){
-            map.put("startRow", 1);
-            map.put("endRow", pageSize);
-        }
-        else{
-            map.put("startRow", pageSize*(pageNo-1)+1);
-            map.put("endRow", pageSize*pageNo);
-        }
         return contactDao.selectAll(map);
     }
 

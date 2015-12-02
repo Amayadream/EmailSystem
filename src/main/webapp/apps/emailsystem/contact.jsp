@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%String path = request.getContextPath();%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,7 @@
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap-table/css/bootstrap-table.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/scojs.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/static/css/pagination.css">
   <%--<link rel="stylesheet" type="text/css" href="<%=path%>/style/css/mosto.css">--%>
   <style>
     .table th,.table td {
@@ -139,7 +141,7 @@
         <th>分组</th>
         <th>交互</th>
         <th width="10%">操作</th>
-        <c:forEach items="${result}" var="contact" varStatus="status">
+        <c:forEach items="${page.result}" var="contact" varStatus="status">
           <tr>
             <td>${status.index + 1}</td>
             <td>${contact.name}</td>
@@ -160,7 +162,7 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#" onclick="showUpdateTable('${contact.cid}')"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>
+                  <li><a href="#" onclick="updateContact('${contact.cid}')"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>
                   <li class="divider"></li>
                   <li><a href="#" onclick="deleteContact('${contact.cid}')"><span class="glyphicon glyphicon-trash"></span> 删除</a></li>
                 </ul>
@@ -170,6 +172,9 @@
         </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
+    <div style="text-align:center">
+      <tags:pagination page="${page}" paginationSize="${page.pageSize}"/>
+    </div>
   </div>	<!-- container end -->
 </div>	<!-- col end -->
 
@@ -264,7 +269,7 @@
       $(this).popover({placement: "right",trigger: "hover"});
     });
   });
-  function showUpdateTable(id){
+  function updateContact(id){
     $.getJSON('<%=path%>/contact/id',{id : id},function(data){
       $("#edit-id").val(data.cid);
       $("#edit-name").val(data.name);

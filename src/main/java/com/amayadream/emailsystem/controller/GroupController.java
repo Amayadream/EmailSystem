@@ -1,14 +1,16 @@
 package com.amayadream.emailsystem.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.Group;
 import com.amayadream.emailsystem.service.IGroupService;
+import com.amayadream.emailsystem.util.Page;
+import com.amayadream.emailsystem.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +30,14 @@ public class GroupController {
     private Group group;
 
     @RequestMapping(value = "", produces = "application/json;charset=utf-8")
-    public String show(@ModelAttribute("userid") String userid, @RequestParam(value = "page", defaultValue = "1") int pageNo, Model model){
-        int pageSize = 10;
-        List<Group> list = groupService.selectAll(userid, pageNo, pageSize);
-        model.addAttribute("result",list);
+    public String show(@ModelAttribute("userid") String userid, Model model, HttpServletRequest request){
+        Page<Group> page = new Page<Group>(PageUtil.PAGE_SIZE);
+        int[] pageParams = PageUtil.init(page, request);
+        List<Group> list = groupService.selectAll(pageParams[0],pageParams[1],userid);
+        int count = Integer.parseInt(groupService.count(userid).getGid());
+        page.setTotalCount(count);
+        page.setResult(list);
+        model.addAttribute("page",page);
         return "apps/emailsystem/group";
     }
 
@@ -51,7 +57,7 @@ public class GroupController {
             }else{
                 Group group = groupService.selectGroupByName(userid,groupname);
                 if(group != null){
-                    redirectAttributes.addFlashAttribute("ERROR","此分组已存在,请重试!!");
+                    redirectAttributes.addFlashAttribute("ERROR","分组"+ groupname +"已存在!");
                 }else{
                     boolean flag = groupService.insert(userid, groupname);
                     if(flag){

@@ -12,7 +12,7 @@ import java.util.Map;
  * TODO   :
  */
 public interface IGroupService {
-    public List<Group> selectAll(String userid, int pageNo, int pageSize);
+    public List<Group> selectAll(int startRow, int endRow, String userid);
     public Group selectGroupByName(String userid, String groupname);
     public Group selectGroupById(String userid, String gid);
     public Group count(String userid);

@@ -15,8 +15,8 @@ import java.io.PrintWriter;
  * TODO   :
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    private static final String[] IGNORE_URI = {"user/login","/login","/user/logout"};
-    private static final String LOGIN_URI = "/login";
+    private static final String[] IGNORE_URI = {"user/login","/login","/user/logout"};  //忽略的URI
+    private static final String LOGIN_URI = "/login";   //登陆URI
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
