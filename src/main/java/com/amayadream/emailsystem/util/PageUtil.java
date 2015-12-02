@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PageUtil {
 
-  public static int PAGE_SIZE = 3;
+  public static int PAGE_SIZE = 2;
 
   public static int[] init(Page<?> page, HttpServletRequest request) {
     int pageNumber = Integer.parseInt(StringUtils.defaultIfBlank(request.getParameter("p"), "1"));

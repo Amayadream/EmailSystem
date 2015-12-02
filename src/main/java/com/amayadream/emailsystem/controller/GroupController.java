@@ -1,6 +1,5 @@
 package com.amayadream.emailsystem.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.Contact;
 import com.amayadream.emailsystem.pojo.Group;
 import com.amayadream.emailsystem.service.IContactService;
@@ -38,7 +37,7 @@ public class GroupController {
     public String show(@ModelAttribute("userid") String userid, Model model, HttpServletRequest request){
         Page<Group> page = new Page<Group>(PageUtil.PAGE_SIZE);
         int[] pageParams = PageUtil.init(page, request);
-        List<Group> list = groupService.selectAll(pageParams[0],pageParams[1],userid);
+        List<Group> list = groupService.selectAll(pageParams[0]+1,pageParams[0]+pageParams[1],userid);
         int count = Integer.parseInt(groupService.count(userid).getGid());
         page.setTotalCount(count);
         page.setResult(list);

@@ -281,8 +281,8 @@
 
   function updateContact(id){
     $.getJSON('<%=path%>/contact/id',{id : id},function(data){
-      var selected = $("#edit-groupid").find("option:selected").removeAttr("selected");
-//      $("#edit-groupid").find("option[selected=true]").attr("selected",false);
+//      var selected = $("#edit-groupid").find("option:selected").removeAttr("selected");
+      $("#edit-groupid").find("option:selected").attr("selected",false);
       $("#edit-id").val(data.cid);
       $("#edit-name").val(data.name);
       $("#edit-email").val(data.email);

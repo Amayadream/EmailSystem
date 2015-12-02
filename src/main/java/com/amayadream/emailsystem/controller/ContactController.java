@@ -41,7 +41,7 @@ public class ContactController {
     public String all(Model model, @ModelAttribute("userid") String userid, HttpServletRequest request){
         Page<Contact> page = new Page<Contact>(PageUtil.PAGE_SIZE);
         int[] pageParams = PageUtil.init(page, request);
-        List<Contact> list = contactService.selectAll(pageParams[0],pageParams[1],userid);
+        List<Contact> list = contactService.selectAll(pageParams[0]+1,pageParams[0]+pageParams[1],userid);
         int count = Integer.parseInt(contactService.count(userid).getCid());
         page.setTotalCount(count);
         page.setResult(list);
