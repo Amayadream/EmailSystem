@@ -85,8 +85,13 @@
         <input type="text" class="form-control" id="add-email" name="email" placeholder="这里输入联系人邮箱">
       </div>
       <div class="col-md-12">
-        <label for="add-groupid">分组</label>
-        <input type="text" class="form-control" id="add-groupid" name="groupid" placeholder="这里输入联系人分组">
+        <label >分组</label>
+        <select class="form-control" name="groupid" id="add-groupid">
+          <option selected="selected"></option>
+          <c:forEach items="${group}" var="group" varStatus="status">
+            <option value="${group.gid}">${group.groupname}</option>
+          </c:forEach>
+        </select>
       </div>
       <div class="col-md-12"  style="margin-top:20px;margin-bottom:0px" >
         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> 保存</button>
@@ -200,8 +205,12 @@
             <input type="text" class="form-control" id="edit-email" name="email" placeholder="这里输入联系人邮箱">
           </div>
           <div>
-            <label for="edit-groupid">分组</label>
-            <input type="text" class="form-control" id="edit-groupid" name="groupid" placeholder="这里输入联系人分组">
+            <label >分组</label>
+            <select class="form-control" name="groupid" id="edit-groupid">
+              <c:forEach items="${group}" var="group" varStatus="status">
+                <option value="${group.gid}">${group.groupname}</option>
+              </c:forEach>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
@@ -269,24 +278,27 @@
       $(this).popover({placement: "right",trigger: "hover"});
     });
   });
+
   function updateContact(id){
     $.getJSON('<%=path%>/contact/id',{id : id},function(data){
+      var selected = $("#edit-groupid").find("option:selected").removeAttr("selected");
+//      $("#edit-groupid").find("option[selected=true]").attr("selected",false);
       $("#edit-id").val(data.cid);
       $("#edit-name").val(data.name);
       $("#edit-email").val(data.email);
-      $("#edit-groupid").val(data.groupid);
+      $("#edit-groupid ").find("option[value='"+data.groupid+"']").attr("selected",true);
     });
     $("#edit-model").modal({
     	keyboard : true
     });
   }
+
   function deleteContact(id){
     $("#delete-id").val(id);
     $("#delete-model").modal({
       keyboard : true
     });
   }
-
 </script>
 </body>
 </html>

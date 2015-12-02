@@ -39,6 +39,12 @@
     AND USERID = #{userid}
   </select>
 
+  <select id="selectAllGroup" resultMap="BaseResultMap" parameterType="string" >
+    SELECT DISTINCT GID, GROUPNAME
+    FROM GROUPS
+    WHERE USERID = #{userid}
+  </select>
+
   <select id="count" resultMap="BaseResultMap" parameterType="string">
     SELECT COUNT(GID) GID FROM GROUPS WHERE USERID = #{userid}
   </select>

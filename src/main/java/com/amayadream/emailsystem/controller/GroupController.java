@@ -1,6 +1,9 @@
 package com.amayadream.emailsystem.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.amayadream.emailsystem.pojo.Contact;
 import com.amayadream.emailsystem.pojo.Group;
+import com.amayadream.emailsystem.service.IContactService;
 import com.amayadream.emailsystem.service.IGroupService;
 import com.amayadream.emailsystem.util.Page;
 import com.amayadream.emailsystem.util.PageUtil;
@@ -26,6 +29,8 @@ import java.util.Map;
 public class GroupController {
     @Resource
     private IGroupService groupService;
+    @Resource
+    private IContactService contactService;
     @Resource
     private Group group;
 
@@ -101,12 +106,18 @@ public class GroupController {
         if(group == null){
             redirectAttributes.addFlashAttribute("ERROR","该分组不存在!");
         }else{
-            boolean flag = groupService.delete(gid, userid);
-            if(flag){
-                redirectAttributes.addFlashAttribute("INFO","删除成功!");
+            Contact contact = contactService.countByGroup(userid, gid);
+            if(Integer.parseInt(contact.getCid())==0){      //判断分组下是否存在用户
+                boolean flag = groupService.delete(gid, userid);
+                if(flag){
+                    redirectAttributes.addFlashAttribute("INFO","删除成功!");
+                }else{
+                    redirectAttributes.addFlashAttribute("ERROR","删除失败,请重试!");
+                }
             }else{
-                redirectAttributes.addFlashAttribute("INFO","删除失败,请重试!");
+                redirectAttributes.addFlashAttribute("ERROR","该分组下还有联系人,请先删除联系人!");
             }
+
         }
         return "redirect:/group";
     }

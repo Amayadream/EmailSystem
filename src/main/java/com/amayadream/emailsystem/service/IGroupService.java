@@ -15,6 +15,7 @@ public interface IGroupService {
     public List<Group> selectAll(int startRow, int endRow, String userid);
     public Group selectGroupByName(String userid, String groupname);
     public Group selectGroupById(String userid, String gid);
+    public List<Group> selectAllGroup(String usesrid);
     public Group count(String userid);
     public boolean insert(String userid, String groupname);
     public boolean update(String gid, String userid, String groupname);

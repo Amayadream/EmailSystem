@@ -17,6 +17,7 @@ public interface IGroupDao {
     public List<Group> selectAll(Map<String, Object> map);
     public Group selectGroupByName(Group group);
     public Group selectGroupById(Group group);
+    public List<Group> selectAllGroup(String usesrid);
     public Group count(String userid);
     public boolean insert(Group group);
     public boolean update(Group group);

@@ -48,6 +48,12 @@ public class ContactServiceImpl implements IContactService {
         return contactDao.count(userid);
     }
 
+    public Contact countByGroup(String userid, String groupid) {
+        contact.setUserid(userid);
+        contact.setGroupid(groupid);
+        return contactDao.countByGroup(contact);
+    }
+
     public boolean insert(String userid, String name, String email, String groupid) {
         contact.setUserid(userid);
         contact.setName(name);

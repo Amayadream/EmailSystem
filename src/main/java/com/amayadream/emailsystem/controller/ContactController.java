@@ -2,7 +2,9 @@ package com.amayadream.emailsystem.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.Contact;
+import com.amayadream.emailsystem.pojo.Group;
 import com.amayadream.emailsystem.service.IContactService;
+import com.amayadream.emailsystem.service.IGroupService;
 import com.amayadream.emailsystem.util.Page;
 import com.amayadream.emailsystem.util.PageUtil;
 import com.amayadream.emailsystem.util.RegexUtil;
@@ -31,6 +33,8 @@ public class ContactController {
     @Resource
     private IContactService contactService;
     @Resource
+    private IGroupService groupService;
+    @Resource
     private Contact contact;
 
     @RequestMapping(value = "", produces = "application/json;charset=utf-8")
@@ -41,6 +45,8 @@ public class ContactController {
         int count = Integer.parseInt(contactService.count(userid).getCid());
         page.setTotalCount(count);
         page.setResult(list);
+        List<Group> group = groupService.selectAllGroup(userid);  //显示分组菜单
+        model.addAttribute("group",group);
         model.addAttribute("page",page);
         return "apps/emailsystem/contact";
     }
@@ -97,19 +103,15 @@ public class ContactController {
             if(name.length() < 2){
                 redirectAttributes.addFlashAttribute("ERROR","姓名过短,请重新输入!");
             }else{
-                if(contactService.selectContactByName(name, userid) == null){
-                    if(regexUtil.checkEmail(email)){
-                        boolean flag = contactService.update(cid, userid, name, email, groupid);
-                        if(flag){
-                            redirectAttributes.addFlashAttribute("INFO","编辑[" + name + "]成功!");
-                        }else{
-                            redirectAttributes.addFlashAttribute("ERROR","未知原因导致添加失败,请重试");
-                        }
+                if(regexUtil.checkEmail(email)){
+                    boolean flag = contactService.update(cid, userid, name, email, groupid);
+                    if(flag){
+                        redirectAttributes.addFlashAttribute("INFO","编辑[" + name + "]成功!");
                     }else{
-                        redirectAttributes.addFlashAttribute("ERROR","邮箱[" + email + "]不符合规则,请重新输入!");
+                        redirectAttributes.addFlashAttribute("ERROR","未知原因导致添加失败,请重试");
                     }
-                }else {
-                    redirectAttributes.addFlashAttribute("ERROR","联系人[" + name + "]已存在!");
+                }else{
+                    redirectAttributes.addFlashAttribute("ERROR","邮箱[" + email + "]不符合规则,请重新输入!");
                 }
             }
         }

@@ -20,6 +20,8 @@ public interface IContactService {
 
     public Contact count(String userid);
 
+    public Contact countByGroup(String userid, String groupid);
+
     public boolean insert(String userid, String name, String email, String groupid);
 
     public boolean update(String cid, String userid, String name, String email, String groupid);

@@ -22,6 +22,8 @@ public interface IContactDao {
 
     public Contact count(String userid);
 
+    public Contact countByGroup(Contact contact);
+
     public boolean insert(Contact contact);
 
     public boolean update(Contact contact);

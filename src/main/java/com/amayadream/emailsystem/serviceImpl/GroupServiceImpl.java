@@ -43,6 +43,10 @@ public class GroupServiceImpl implements IGroupService {
         return groupDao.selectGroupById(group);
     }
 
+    public List<Group> selectAllGroup(String usesrid){
+        return groupDao.selectAllGroup(usesrid);
+    }
+
     public Group count(String userid) {
         return groupDao.count(userid);
     }

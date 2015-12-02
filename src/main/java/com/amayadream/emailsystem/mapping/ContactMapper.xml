@@ -49,6 +49,12 @@
     WHERE USERID = #{userid}
   </select>
 
+  <select id="countByGroup" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact" >
+    SELECT COUNT(*) CID FROM CONTACT
+    WHERE USERID = #{userid}
+    AND GROUPID = #{groupid}
+  </select>
+
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Contact" >
     INSERT INTO CONTACT (CID,USERID, NAME, EMAIL ,GROUPID)
     VALUES (sys_guid(),#{userid}, #{name}, #{email}, #{groupid})
