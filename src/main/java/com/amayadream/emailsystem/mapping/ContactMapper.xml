@@ -44,6 +44,13 @@
     AND USERID = #{userid}
   </select>
 
+  <select id="selectContactByGroupid" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
+    SELECT USERID,NAME,EMAIL,(SELECT GROUPNAME FROM GROUPS WHERE GID = #{groupid}) GROUPID
+    FROM CONTACT
+    WHERE USERID = #{userid}
+    AND GROUPID = #{groupid}
+  </select>
+
   <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
     SELECT COUNT(CID) CID FROM CONTACT
     WHERE USERID = #{userid}

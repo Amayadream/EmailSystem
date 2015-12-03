@@ -148,11 +148,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="#" onclick="javascript:updateGroup('${group.gid}')"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>
-                  <li>
-                    <a href="#" data-toggle="modal" data-target="#search-model">
-                      <span class="glyphicon glyphicon-search"></span> 查看
-                    </a>
-                  </li>
+                  <li><a href="#" onclick="javascript:showContact('${group.gid}');"><span class="glyphicon glyphicon-search"></span> 查看</a></li>
                   <li class="divider"></li>
                   <li><a href="#" onclick="javascript:deleteGroup('${group.gid}')"><span class="glyphicon glyphicon-trash"></span> 删除</a></li>
                 </ul>
@@ -241,12 +237,6 @@
             <td>524806599@qq.com</td>
             <td><span class="label label-default">0</span></td>
           </tr>
-
-          <tr>
-            <td>Amaya</td>
-            <td>524806599@qq.com</td>
-            <td><span class="label label-success">10</span></td>
-          </tr>
         </table>
       </div>
       <div class="modal-footer">
@@ -293,6 +283,15 @@
   function deleteGroup(id){
     $("#delete-id").val(id);
     $("#delete-model").modal({
+      keyboard : true
+    });
+  }
+
+  function showContact(id){
+    $.getJSON('<%=path%>/contact/show',{groupid : id},function(data){
+      //do something
+    });
+    $("#search-model").modal({
       keyboard : true
     });
   }

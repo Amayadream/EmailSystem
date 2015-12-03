@@ -51,6 +51,13 @@ public class ContactController {
         return "apps/emailsystem/contact";
     }
 
+    @RequestMapping(value = "show", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String show(@ModelAttribute("userid") String userid, String groupid){
+        List<Contact> list = contactService.selectContactByGroupid(groupid, userid);
+        return JSON.toJSONString(list);
+    }
+
     @RequestMapping(value = "id", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Contact id(@RequestParam("id") String cid, @ModelAttribute("userid") String userid){

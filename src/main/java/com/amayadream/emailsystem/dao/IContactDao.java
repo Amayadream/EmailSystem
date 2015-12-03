@@ -20,6 +20,8 @@ public interface IContactDao {
 
     public Contact selectContactByName(Contact contact);
 
+    public List<Contact> selectContactByGroupid(Contact contact);
+
     public Contact count(String userid);
 
     public Contact countByGroup(Contact contact);

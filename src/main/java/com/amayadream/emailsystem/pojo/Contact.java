@@ -10,12 +10,16 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("contact")
 public class Contact {
-    private String cid;
-    private String userid;
-    private String name;
-    private String email;
-    private String groupid;
+    private String cid;         //联系人ID
+    private String userid;      //用户ID
+    private String name;        //姓名
+    private String email;       //邮箱
+    private String groupid;     //分组
 
+    /**
+     * getter&setter
+     * @return
+     */
     public String getCid() {
         return cid;
     }

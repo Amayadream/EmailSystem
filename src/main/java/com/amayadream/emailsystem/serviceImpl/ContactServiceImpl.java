@@ -44,6 +44,12 @@ public class ContactServiceImpl implements IContactService {
         return contactDao.selectContactByName(contact);
     }
 
+    public List<Contact> selectContactByGroupid(String groupid, String userid) {
+        contact.setGroupid(groupid);
+        contact.setUserid(userid);
+        return contactDao.selectContactByGroupid(contact);
+    }
+
     public Contact count(String userid) {
         return contactDao.count(userid);
     }

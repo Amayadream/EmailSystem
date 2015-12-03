@@ -18,6 +18,8 @@ public interface IContactService {
 
     public Contact selectContactByName(String name, String userid);
 
+    public List<Contact> selectContactByGroupid(String groupid, String userid);
+
     public Contact count(String userid);
 
     public Contact countByGroup(String userid, String groupid);
