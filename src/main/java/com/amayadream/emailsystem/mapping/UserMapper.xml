@@ -16,6 +16,7 @@
     ID, USERNAME, PASSWORD, EMAIL, FIRSTTIME, LASTTIME, AVAILABLE
   </sql>
 
+  <!-- 查询所有用户 -->
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
     SELECT <include refid="Base_Column_List" />
     FROM
@@ -29,6 +30,7 @@
     WHERE RN BETWEEN #{startRow} AND #{endRow}
   </select>
 
+  <!-- 根据用户id查询用户 -->
   <select id="selectUserById" resultMap="BaseResultMap" parameterType="string" >
     SELECT
     <include refid="Base_Column_List" />
@@ -36,6 +38,7 @@
     WHERE ID = #{id}
   </select>
 
+  <!-- 根据用户名查询用户 -->
   <select id="selectUserByUsername" resultMap="BaseResultMap" parameterType="string">
     SELECT
     <include refid="Base_Column_List" />
@@ -43,33 +46,39 @@
     WHERE USERNAME = #{username}
   </select>
 
+  <!-- 查询用户总数 -->
   <select id="count" resultMap="BaseResultMap">
     SELECT COUNT(ID) ID FROM USERS
   </select>
 
+  <!-- 插入用户 -->
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.User" >
     INSERT INTO USERS (ID, USERNAME, PASSWORD, EMAIL ,FIRSTTIME, LASTTIME AVAILABLE)
     VALUES (sys_guid(), #{username}, #{password}, #{email}, #{firsttime}, #{lasttime}, #{available})
   </insert>
 
+  <!-- 更新最后登录时间 -->
   <update id="updateLastTime" parameterType="com.amayadream.emailsystem.pojo.User">
     UPDATE USERS
     SET LASTTIME = #{lasttime}
     WHERE USERNAME = #{username}
   </update>
 
+  <!-- 更新可用标记 -->
   <update id="updateAvailable" parameterType="com.amayadream.emailsystem.pojo.User">
     UPDATE USERS
     SET AVAILABLE = #{available}
     WHERE ID = #{id}
   </update>
 
+  <!-- 更新用户 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.User">
     UPDATE USERS
       SET USERNAME = #{username}, PASSWORD = #{password}, EMAIL = #{email}
     WHERE id = #{id}
   </update>
 
+  <!-- 删除用户 -->
   <delete id="delete" parameterType="string" >
     DELETE FROM USERS
     WHERE ID = #{id}

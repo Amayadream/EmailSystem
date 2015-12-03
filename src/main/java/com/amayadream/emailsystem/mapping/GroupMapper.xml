@@ -11,6 +11,7 @@
     GID, USERID, GROUPNAME
   </sql>
 
+  <!-- 查询所有分组 -->
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
     SELECT * FROM
       (
@@ -25,6 +26,7 @@
     WHERE RN BETWEEN #{startRow} AND #{endRow}
   </select>
 
+  <!-- 根据分组编号查询分组 -->
   <select id="selectGroupById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Group" >
     SELECT <include refid="Base_Column_List" />
     FROM GROUPS
@@ -32,6 +34,7 @@
     AND USERID = #{userid}
   </select>
 
+  <!-- 根据分组名称查询分组 -->
   <select id="selectGroupByName" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Group" >
     SELECT <include refid="Base_Column_List" />
     FROM GROUPS
@@ -39,6 +42,7 @@
     AND USERID = #{userid}
   </select>
 
+  <!-- 查询所有分组名称,用于下拉菜单 -->
   <select id="selectAllGroup" resultMap="BaseResultMap" parameterType="string" >
     SELECT DISTINCT GID, GROUPNAME
     FROM GROUPS
@@ -49,22 +53,26 @@
     SELECT COUNT(GID) GID FROM GROUPS WHERE USERID = #{userid}
   </select>
 
+  <!-- 插入分组 -->
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Group" >
     INSERT INTO GROUPS (GID, USERID, GROUPNAME)
     VALUES (sys_guid(), #{userid}, #{groupname})
   </insert>
 
+  <!-- 更新分组 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Group">
     UPDATE GROUPS
     SET GROUPNAME = #{groupname}
     WHERE GID = #{gid} AND USERID = #{userid}
   </update>
 
+  <!-- 删除分组 -->
   <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Group" >
     DELETE FROM GROUPS
     WHERE GID = #{gid} AND USERID = #{userid}
   </delete>
 
+  <!-- 删除某个用户的所有分组 -->
   <delete id="deleteAllGroup" parameterType="string" >
     DELETE FROM GROUPS
     WHERE USERID = #{userid}

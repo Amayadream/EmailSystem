@@ -17,6 +17,10 @@ public class Group {
     // -- 临时属性 -- //
     private int count;          //组员数
 
+    /**
+     * getter&setter
+     * @return
+     */
     public String getGid() {
         return gid;
     }

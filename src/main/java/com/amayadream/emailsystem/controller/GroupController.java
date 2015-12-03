@@ -20,7 +20,7 @@ import java.util.Map;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
  * Date   :  2015.11.29 18:31
- * TODO   :
+ * TODO   :  分组控制器
  */
 @Controller
 @RequestMapping("/group")

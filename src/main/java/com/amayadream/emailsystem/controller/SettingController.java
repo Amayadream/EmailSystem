@@ -18,7 +18,7 @@ import java.util.Map;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
  * Date   :  2015.11.29 17:33
- * TODO   :
+ * TODO   :  设置控制器
  */
 @Controller
 @RequestMapping(value = "setting")

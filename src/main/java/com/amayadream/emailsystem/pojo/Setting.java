@@ -10,14 +10,18 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("setting")
 public class Setting {
-    private String userid;
-    private String sendname;
-    private String sendmail;
-    private String sendpass;
-    private String server;
-    private String port;
-    private int isset;
+    private String userid;      //用户编号
+    private String sendname;    //发信昵称
+    private String sendmail;    //发信邮箱
+    private String sendpass;    //发信密码
+    private String server;      //邮件服务器地址
+    private String port;        //邮件服务器端口
+    private int isset;          //设置标记
 
+    /**
+     * getter&setter
+     * @return
+     */
     public String getUserid() {
         return userid;
     }

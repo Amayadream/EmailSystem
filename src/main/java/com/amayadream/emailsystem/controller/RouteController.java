@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
  * Date   :  2015.11.28 15:35
- * TODO   :
+ * TODO   :  路由控制器
  */
 @Controller
 public class RouteController {

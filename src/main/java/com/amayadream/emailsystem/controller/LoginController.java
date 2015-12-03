@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
  * Date   :  2015.11.28 00:39
- * TODO   :
+ * TODO   :  登录控制器
  */
 @Controller
 @RequestMapping(value = "/user")

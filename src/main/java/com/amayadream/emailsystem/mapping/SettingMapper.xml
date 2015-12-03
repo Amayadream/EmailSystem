@@ -15,30 +15,35 @@
     USERID, SENDMAIL, SENDNAME, SENDPASS, SERVER, PORT, ISSET
   </sql>
 
+  <!-- 查询某个用户的设置 -->
   <select id="selectSettingByUserid" resultMap="BaseResultMap" parameterType="string">
     SELECT <include refid="Base_Column_List"/>
     FROM SETTING
     WHERE USERID = #{userid}
   </select>
 
+  <!-- 初始化设置 -->
   <insert id="indexSetting" parameterType="com.amayadream.emailsystem.pojo.Setting" >
     INSERT INTO SETTING (SENDMAIL, ISSET)
     VALUES (#{sendmail}, #{isset})
     WHERE USERID = #{userid}
   </insert>
 
+  <!-- 更新设置标记 -->
   <update id="updateIsset" parameterType="com.amayadream.emailsystem.pojo.Setting">
     UPDATE SETTING
     SET ISSET = #{isset}
     WHERE USERID = #{userid}
   </update>
 
+  <!-- 更新设置 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Setting">
     UPDATE SETTING
     SET SENDMAIL = #{sendmail}, SENDNAME = #{sendname}, SENDPASS = #{sendpass}, SERVER = #{server}, PORT = #{port}
     WHERE USERID = #{userid}
   </update>
 
+  <!-- 删除设置 -->
   <delete id="delete" parameterType="string" >
     DELETE FROM SETTING
     WHERE USERID = #{userid}

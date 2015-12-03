@@ -19,7 +19,7 @@ import java.util.Map;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.controller
  * Author :  Amayadream
  * Date   :  2015.11.29 16:37
- * TODO   :
+ * TODO   :  用户控制器
  */
 @Controller
 @RequestMapping(value = "/user")

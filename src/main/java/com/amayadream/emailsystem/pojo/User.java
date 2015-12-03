@@ -11,14 +11,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository("user")
 public class User {
-    private String id;
-    private String username;
-    private String password;
-    private String email;
-    private String firsttime;
-    private String lasttime;
-    private int available;
+    private String id;          //用户ID
+    private String username;    //用户名
+    private String password;    //密码
+    private String email;       //邮箱
+    private String firsttime;   //注册时间
+    private String lasttime;    //最后登录时间
+    private int available;      //可用标记
 
+    /**
+     * getter&setter
+     * @return
+     */
     public String getId() {
         return id;
     }
