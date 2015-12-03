@@ -15,6 +15,7 @@
     <!-- log4j日志文件管理包版本 -->
     <slf4j.version>1.7.7</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
+    <javamail.version>1.4.7</javamail.version>
   </properties>
 
   <dependencies>
@@ -205,6 +206,12 @@
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
     </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>${javamail.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
