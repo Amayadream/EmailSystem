@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class MailUtil {
 
-    // -- 验证三要素 -- //
+    // -- 验证要素 -- //
     private String sendhost;    //邮件服务器
     private String sendport;    //端口号
     private String sendmail;    //发信邮箱
@@ -35,6 +35,8 @@ public class MailUtil {
     private String[] bcc;       //密送,类型为数组
     private File[] files;       //附件,类型为数组
 
+    private MimeMessage message;
+    private Session session;
     private Transport transport;
 
     /**
@@ -67,7 +69,7 @@ public class MailUtil {
         properties.put("mail.smtp.port",sendport);
         properties.put("mail.sender.username",sendmail);
         properties.put("mail.sender.password",sendpass);
-        Session session = Session.getInstance(properties);
+        session = Session.getInstance(properties);
         session.setDebug(debug);// 开启后有调试信息
         return session;
     }
@@ -77,8 +79,8 @@ public class MailUtil {
      * @param session
      * @return
      */
-    public Message getMessage(Session session){
-        Message message = new MimeMessage(session);
+    public MimeMessage getMessage(){
+        message = new MimeMessage(session);
         try {
             // 邮件主题
             message.setSubject(subject);
@@ -99,18 +101,18 @@ public class MailUtil {
             }
             message.setRecipients(Message.RecipientType.TO, to);
             if (cc != null) {
-                InternetAddress[] addresses = new InternetAddress[cc.length];
+                InternetAddress[] add_cc = new InternetAddress[cc.length];
                 for (int i = 0; i < cc.length; i++) {
-                    to[i] = new InternetAddress(cc[i]);
+                    add_cc[i] = new InternetAddress(cc[i]);
                 }
-                message.setRecipients(Message.RecipientType.CC, addresses);
+                message.setRecipients(Message.RecipientType.CC, add_cc);
             }
             if (bcc != null) {
-                InternetAddress[] addresses = new InternetAddress[bcc.length];
+                InternetAddress[] add_bcc = new InternetAddress[bcc.length];
                 for (int i = 0; i < bcc.length; i++) {
-                    to[i] = new InternetAddress(bcc[i]);
+                    add_bcc[i] = new InternetAddress(bcc[i]);
                 }
-                message.setRecipients(Message.RecipientType.BCC, addresses);
+                message.setRecipients(Message.RecipientType.BCC, add_bcc);
             }
             // 向multipart对象中添加邮件的各个部分内容，包括文本内容和附件
             Multipart multipart = new MimeMultipart();
@@ -149,7 +151,9 @@ public class MailUtil {
      * @param session
      * @return
      */
-    public String send(Message message, Session session){
+    public String sendMail(boolean debug){
+        session = getSession(debug);
+        message = getMessage();
         try {
             transport = session.getTransport("smtp");
             // smtp验证，就是你用来发邮件的邮箱用户名密码
@@ -161,7 +165,7 @@ public class MailUtil {
             return "providerError";
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "messageError";
+            return "messageError";//密码错误在这里触发,网络连接失败也在这里触发
         } finally {
             if (transport != null) {
                 try {
@@ -173,15 +177,6 @@ public class MailUtil {
         }
     }
 
-    @Test
-    public void sendmail(){
-        String[] sendto = {"13638040@qq.com","524806599@qq.com"};
-        String[] sendcc = {"Amaya.first@gmail.com"};
-        File file = new File("C:\\Users\\Administrator\\Desktop\\QQ截图20151203152914.png");
-        File file2 = new File("C:\\Users\\Administrator\\Desktop\\QQ截图20151203152706.png");
-        File[] asd = new File[] {file,file2};
-        init("smtp.163.com","25","Amaya_first@163.com","*********","今天太阳真是大啊","Amy","<h2>明天一起出来玩</h2>",sendto,null,null,asd);
-        send(getMessage(getSession(true)),getSession(true));
-    }
+
 
 }
