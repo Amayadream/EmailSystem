@@ -96,7 +96,7 @@
       <input type="file" id="file">
     </div>
     <div class="col-md-10 col-md-offset-1"  style="margin-top:10px;margin-bottom:10px" >
-      <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-send"></span> 发送</button>
+      <button type="button" class="btn btn-success" onclick="sendMail();"><span class="glyphicon glyphicon-send"></span> 发送</button>
     </div>
   </div>
 
@@ -173,37 +173,6 @@
             </div>
           </td>
         </tr>
-        <tr>
-          <td>产品 B</td>
-          <td>400</td>
-          <td>200</td>
-          <td><span class="label label-success">Success</span></td>
-          <td id="showfile">
-            <button type="button" class="btn btn-info" title="附件标题" data-container="body" data-toggle="popover"
-                    dataplacement="top" data-content="file.txt">
-              <span class="glyphicon glyphicon-paperclip"></span> 附件
-            </button>
-          </td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="<%=path%>/view"><span class="glyphicon glyphicon-eye-open"></span> 详细</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#deleteModel">
-                    <span class="glyphicon glyphicon-trash"></span> 删除
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
   </div>	<!-- container end -->
@@ -252,6 +221,31 @@
 </div><!-- /.modal -->
 
 
+<!-- 进度条模态框 -->
+<div class="modal fade" id="progress-model" tabindex="-1" role="dialog" aria-labelledby="progress" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>--%>
+        <h4 class="modal-title" id="progress">
+          <span class="glyphicon glyphicon-globe"></span> 发送中
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+            <span class="sr-only">60% Complete</span>
+          </div>
+        </div>
+      </div>
+      <%--<div class="modal-footer">--%>
+        <%--<button type="button" id="delete-email" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> 确认</button>--%>
+        <%--<button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 关闭</button>--%>
+      <%--</div>--%>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=path%>/static/js/main.js"></script>
@@ -263,6 +257,27 @@
 <script src="<%=path%>/plugins/scojs/js/sco.modal.js"></script>
 
 <script type="text/javascript">
+  var x = 101;
+  var stop = 1;
+  function run() {
+    x += 8;
+    $(".progress-bar").css("width",x+"%");
+    var timer = setTimeout("run()", 500);
+    if (x >100&&stop<1) {
+      x = 0;
+    }
+  }
+
+  function sendMail(){
+    $("#progress-model").modal({
+      backdrop : "static",
+      keyboard : false
+    });
+    x = 0;
+    stop = 0;
+    run();
+  }
+
   if("${INFO}"){
     $.scojs_message("${INFO}", $.scojs_message.TYPE_OK);
   }

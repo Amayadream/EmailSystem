@@ -3,29 +3,27 @@
 <!DOCTYPE html >
 <html>
 <head>
-  <script src="<%=path%>/style/js/jquery-2.1.4.min.js"></script>
+  <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Insert title here</title>
   <script type="text/javascript">
     var i = 1;
-    var j = 1;
+    var x = 1;
     $(document).ready(function(){
       $("#add-file").click(function(){
-        document.getElementById("upload").innerHTML+='<div id="div_'+j+'"><input  name="file_'+j+'" type="file"  /><input type="button" value="删除"  onclick="del('+j+')"/></div>';
-        j = j + 1;
+        document.getElementById("upload").innerHTML+='<div id="div_'+x+'"><input  name="file_'+x+'" type="file"  /><input type="button" value="删除"  onclick="del('+x+')"/></div>';
+        x = x + 1;
       });
     });
-
-
-    function del(o){
-      document.getElementById("upload").removeChild(document.getElementById("div_"+o));
+    function del(x){
+      document.getElementById("upload").removeChild(document.getElementById("div_"+x));
     }
 
   </script>
 </head>
 <body>
 <h1>springMVC包装类上传文件</h1>
-<form name="form" action="file/multiUpload" enctype="multipart/form-data" method="post">
+<form name="form" action="<%=path%>/file/multiUpload" enctype="multipart/form-data" method="post">
   <div id="upload">
     <input type="file" name="file">
   </div>

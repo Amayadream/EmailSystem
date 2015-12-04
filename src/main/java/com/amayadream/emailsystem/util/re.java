@@ -1,4 +1,4 @@
-package com.amayadream.emailsystem.controller;
+package com.amayadream.emailsystem.util;
 
 import javax.mail.Folder;
 import javax.mail.Message;

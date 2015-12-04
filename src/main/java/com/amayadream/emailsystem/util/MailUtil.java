@@ -1,7 +1,5 @@
 package com.amayadream.emailsystem.util;
 
-import org.junit.Test;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -16,7 +14,7 @@ import java.util.Properties;
  * NAME   :  EmailSystem/com.amayadream.emailsystem.util
  * Author :  Amayadream
  * Date   :  2015.12.04 14:00
- * TODO   :
+ * TODO   :  邮件发送工具类
  */
 public class MailUtil {
 
@@ -176,7 +174,5 @@ public class MailUtil {
             }
         }
     }
-
-
 
 }

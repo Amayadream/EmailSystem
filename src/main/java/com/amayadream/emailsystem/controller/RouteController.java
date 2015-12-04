@@ -51,4 +51,14 @@ public class RouteController {
     public String test(){
         return "apps/emailsystem/test";
     }
+
+    @RequestMapping("upload")
+    public String upload(){
+        return "apps/emailsystem/upload";
+    }
+
+    @RequestMapping("result")
+    public String result(){
+        return "apps/emailsystem/result";
+    }
 }
