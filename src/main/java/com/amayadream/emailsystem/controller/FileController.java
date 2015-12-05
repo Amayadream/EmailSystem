@@ -24,7 +24,7 @@ import java.io.*;
 @RequestMapping("/file")
 public class FileController {
 
-    private static final String FILE_URI = "/upload";
+    private static final String FILE_URI = "upload";
     private static final String RENAME_MARK = "(1)";
 
     @RequestMapping("/simpleUpload")
@@ -46,8 +46,10 @@ public class FileController {
     @RequestMapping("/multiUpload"  )
     public String multiUpload(HttpServletRequest request, RedirectAttributes redirectAttributes,
                               UploadUtil uploadUtil) throws IllegalStateException, IOException {
-        String result = uploadUtil.upload(request,FILE_URI,RENAME_MARK);
-        redirectAttributes.addFlashAttribute("result",result);
+        String [] array = uploadUtil.upload(request,FILE_URI,RENAME_MARK);
+        String absolute_file = array[0];
+        String relative_file = array[1];
+        redirectAttributes.addFlashAttribute("result",absolute_file+"|"+relative_file);
         return "redirect:/result";
     }
 

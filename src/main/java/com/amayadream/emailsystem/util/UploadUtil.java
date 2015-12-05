@@ -24,10 +24,11 @@ public class UploadUtil {
      * @param renameMark
      * @return
      */
-    public String upload(HttpServletRequest request, String fileUrl, String renameMark){
+    public String[] upload(HttpServletRequest request, String fileUrl, String renameMark){
         FileUtil fileUtil = new FileUtil();
         DateUtil dateUtil = new DateUtil();
-        String files = "";
+        String absolute_file = "";
+        String relative_file = "";
         //创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         //判断 request 是否有文件上传,即多部分请求
@@ -59,7 +60,8 @@ public class UploadUtil {
                         }
                         try {
                             file.transferTo(localFile);
-                            files += fileUtil.checkStringEnd(fileUrl) + stamp + "/" + fileName + ";";
+                            absolute_file += fileUtil.checkPathEnd(path) + fileName + ";";
+                            relative_file += fileUtil.checkStringEnd(fileUrl) + stamp + "/" + fileName + ";";
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -67,6 +69,6 @@ public class UploadUtil {
                 }
             }
         }
-        return files;
+        return new String[] {absolute_file,relative_file};
     }
 }

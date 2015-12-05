@@ -1,5 +1,7 @@
 package com.amayadream.emailsystem.util;
 
+import org.junit.Test;
+
 import java.io.File;
 
 /**
@@ -74,5 +76,35 @@ public class FileUtil {
             }
         }
         return fileName;
+    }
+
+    /**
+     * 按照分隔符将地址字符串切割开,然后拼装成FIle数组
+     * @param files 字符串
+     * @param split 分隔符,可以为正则
+     * @return
+     */
+    public File[] getFileArrayByString(String files, String split){
+        String[] aa = files.split(split);
+        File[] attachments = new File[aa.length];
+        for(int i=0;i<aa.length;i++){
+            attachments[i] = new File(aa[i]);
+        }
+        return attachments;
+    }
+
+    /**
+     * 按照分隔符分隔字符串,并放入数组内返回
+     * @param str   字符串
+     * @param split 分隔符,可以为正则
+     * @return
+     */
+    public String[] getStringArrayByString(String str, String split){
+        String[] a = str.split(split);
+        String[] array = new String[a.length];
+        for(int i=0;i<a.length;i++){
+            array[i] = a[i];
+        }
+        return array;
     }
 }
