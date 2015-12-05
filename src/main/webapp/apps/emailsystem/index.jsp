@@ -65,39 +65,46 @@
     </h1>
   </div>
 
-
   <div id="content" style="display:none;margin-bottom: 50px">
-    <div class="col-md-10 col-md-offset-1">
-      <label for="title">邮件标题</label>
-      <input type="text" class="form-control" id="title" placeholder="这里输入邮件标题">
-    </div>
-    <div class="col-md-4 col-md-offset-1">
-      <label for="toemail">收信邮箱</label>
-      <input type="text" class="form-control" id="toemail" placeholder="这里输入邮件收件人">
-    </div>
-    <div class="col-md-4 col-md-offset-2">
-      <label for="time">时间</label>
-      <div class="input-group date form_date" style="height:40px" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-        <input id="time" class="form-control" type="text" style="height:40px" value="" readonly>
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-remove"></span>
-          </span>
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-calendar"></span>
-          </span>
+    <form action="<%=path%>/email/send" method="post" enctype="multipart/form-data" onsubmit="return checkSend();">
+      <div class="col-md-10 col-md-offset-1">
+        <label for="subject">邮件主题</label>
+        <input type="text" class="form-control" id="subject" name="subject" placeholder="这里输入邮件主题">
       </div>
-    </div>
-    <div class="col-md-10 col-md-offset-1">
-      <label for="editor">内容:</label>
-      <textarea id="editor" name="editor" style="width:auto;height:500px"></textarea>
-    </div>
-    <div class="col-md-10 col-md-offset-1">
-      <label for="file">附件</label>
-      <input type="file" id="file">
-    </div>
-    <div class="col-md-10 col-md-offset-1"  style="margin-top:10px;margin-bottom:10px" >
-      <button type="button" class="btn btn-success" onclick="sendMail();"><span class="glyphicon glyphicon-send"></span> 发送</button>
-    </div>
+      <div class="col-md-4 col-md-offset-1">
+        <label for="emails">收信邮箱</label>
+        <input type="text" class="form-control" id="emails" name="emails" placeholder="这里输入邮件收件人">
+      </div>
+      <div class="col-md-4 col-md-offset-2">
+        <label for="time">时间</label>
+        <div class="input-group date form_date" style="height:40px" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+          <input id="time" class="form-control" type="text" name="time" style="height:40px" value="" readonly>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-remove"></span>
+            </span>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+      </div>
+      <div class="col-md-10 col-md-offset-1">
+        <label for="editor">内容:</label>
+        <textarea id="editor" name="editor" style="width:auto;height:500px"></textarea>
+      </div>
+      <input type="hidden" id="hidden"  name="content">
+      <div class="col-md-10 col-md-offset-1">
+        <div >
+          <label for="files">附件</label>
+          <input type="button" class="btn btn-sm btn-success" id="add-file" value="增加一行" >
+          <input type="button" class="btn btn-sm btn-danger" id="remove-file" value="删除一行" >
+          <input type="file" name="files" id="files" style="margin-top: 10px">
+        </div>
+        <div id="upload"></div>
+      </div>
+      <div class="col-md-10 col-md-offset-1"  style="margin-top:30px;margin-bottom:30px" >
+        <button type="submit" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-send"></span> 发送</button>
+      </div>
+    </form>
   </div>
 
   <div class="col-md-12">
@@ -257,6 +264,18 @@
 <script src="<%=path%>/plugins/scojs/js/sco.modal.js"></script>
 
 <script type="text/javascript">
+  var index = 1;
+  $(document).ready(function(){
+    $("#add-file").click(function(){
+      document.getElementById("upload").innerHTML+='<div><input type="file" name="file_'+index+'"/></div>';
+      index += 1;
+    });
+  });
+  $("#remove-file").click(function(){
+    $("#upload div:last").remove();
+  });
+
+
   var x = 101;
   var stop = 1;
   function run() {
@@ -268,15 +287,43 @@
     }
   }
 
-  function sendMail(){
-    $("#progress-model").modal({
-      backdrop : "static",
-      keyboard : false
+  function checkSend(){
+    var content;
+    var subject = $("#subject").val();
+    var emails = $("#emails").val();
+    ue.ready(function(){
+      content = ue.getContent();
     });
-    x = 0;
-    stop = 0;
-    run();
+    $("#hidden").val(content);
+    if(subject == null || subject == ""){
+      $.scojs_message("邮件主题不能为空!", $.scojs_message.TYPE_ERROR);
+      return false;
+    }
+    else if(emails == null || emails == ""){
+      $.scojs_message("收件人不能为空!", $.scojs_message.TYPE_ERROR);
+      return false;
+    }
+    else if(content == null || content == ""){
+      $.scojs_message("邮件内容不能为空!", $.scojs_message.TYPE_ERROR);
+      return false;
+    }
+    return true;
+    <%--else{--%>
+      <%--$("#progress-model").modal({--%>
+        <%--backdrop : "static",--%>
+        <%--keyboard : false--%>
+      <%--});--%>
+      <%--x = 0;--%>
+      <%--stop = 0;--%>
+      <%--run();--%>
+      <%--if("${result}"){--%>
+        <%--return true;--%>
+      <%--}else{--%>
+        <%--return false;--%>
+      <%--}--%>
+    <%--}--%>
   }
+
 
   if("${INFO}"){
     $.scojs_message("${INFO}", $.scojs_message.TYPE_OK);
@@ -311,6 +358,7 @@
     $('#deleteModel').modal('hide');
     $.scojs_message('删除成功!', $.scojs_message.TYPE_OK);
   });
+
 </script>
 </body>
 </html>

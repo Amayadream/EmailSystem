@@ -3,10 +3,18 @@ package com.amayadream.emailsystem.serviceImpl;
 import com.amayadream.emailsystem.dao.IEmailDao;
 import com.amayadream.emailsystem.pojo.Email;
 import com.amayadream.emailsystem.service.IEmailService;
+import com.amayadream.emailsystem.util.FileUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,4 +71,5 @@ public class EmailServiceImpl implements IEmailService {
         email.setEid(eid);
         return emailDao.delete(email);
     }
+
 }
