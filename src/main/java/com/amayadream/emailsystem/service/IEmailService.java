@@ -16,6 +16,6 @@ public interface IEmailService {
     public Email selectEmailById(String userid, String eid);
     public Email count(String userid);
     public boolean insert(String uesrid, String emails, String subject, String content, String sendtime, String files, int status);
-    public boolean update(String userid, int status);
+    public boolean update(String userid, String eid, int status);
     public boolean delete(String userid, String eid);
 }

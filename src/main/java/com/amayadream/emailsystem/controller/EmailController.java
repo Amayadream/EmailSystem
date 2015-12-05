@@ -33,24 +33,25 @@ public class EmailController {
     private ISettingDao settingDao;
 
 
-    private static final String FILE_URI = "upload";
-    private static final String RENAME_MARK = "(1)";
+    private static final String FILE_URI = "upload";    //上传的文件夹位置,根目录为webapps目录
+    private static final String RENAME_MARK = "(1)";    //干扰码,即文件重复时在文件后加上的尾缀
 
     @RequestMapping(value = "send")
     public String send(@ModelAttribute("userid") String userid, String subject, String emails, String content, HttpServletRequest request,
                        DateUtil dateUtil, FileUtil fileUtil, UploadUtil uploadUtil, MailUtil mailUtil, RedirectAttributes redirectAttributes){
         Setting setting = settingDao.selectSettingByUserid(userid);             //获取系统配置,即发信邮箱,发信密码,发信昵称,邮件服务器,端口号
         String [] array = uploadUtil.upload(request, FILE_URI, RENAME_MARK);    //上传附件到FILE_URL目录,然后将文件路径以分号隔开返回
-        String absolute_file = array[0];
-        String relative_file = array[1];
+        String absolute_file = array[0];        //绝对路径
+        String relative_file = array[1];        //相对路径
         File[] attachments = fileUtil.getFileArrayByString(absolute_file,";");          //将文件路径按分号切割开,并获取File数组
-
         String[] receiver = fileUtil.getStringArrayByString(emails,";");        //将收件人按分号切割开
         mailUtil.init(setting.getServer(),setting.getPort(),setting.getSendmail(),setting.getSendpass(),subject,setting.getSendname(),content,receiver,null,null,attachments);
         String meg = mailUtil.sendMail(true);
         if (meg == "success") {
+            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), relative_file, 1);
             redirectAttributes.addFlashAttribute("INFO","发送成功!");
         }else{
+            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), relative_file, 0);
             redirectAttributes.addFlashAttribute("ERROR","各种原因发送失败,自己猜吧!");
         }
         return "redirect:/index";

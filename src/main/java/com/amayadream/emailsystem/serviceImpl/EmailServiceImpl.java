@@ -60,8 +60,9 @@ public class EmailServiceImpl implements IEmailService {
         return emailDao.insert(email);
     }
 
-    public boolean update(String userid, int status) {
+    public boolean update(String userid, String eid,  int status) {
         email.setUserid(userid);
+        email.setEid(eid);
         email.setStatus(status);
         return emailDao.update(email);
     }

@@ -307,21 +307,14 @@
       $.scojs_message("邮件内容不能为空!", $.scojs_message.TYPE_ERROR);
       return false;
     }
+    $("#progress-model").modal({
+      backdrop : "static",
+      keyboard : false
+    });
+    x = 0;
+    stop = 0;
+    run();
     return true;
-    <%--else{--%>
-      <%--$("#progress-model").modal({--%>
-        <%--backdrop : "static",--%>
-        <%--keyboard : false--%>
-      <%--});--%>
-      <%--x = 0;--%>
-      <%--stop = 0;--%>
-      <%--run();--%>
-      <%--if("${result}"){--%>
-        <%--return true;--%>
-      <%--}else{--%>
-        <%--return false;--%>
-      <%--}--%>
-    <%--}--%>
   }
 
 
