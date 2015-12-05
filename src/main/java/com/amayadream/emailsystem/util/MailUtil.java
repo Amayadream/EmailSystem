@@ -1,5 +1,7 @@
 package com.amayadream.emailsystem.util;
 
+import org.junit.Test;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;

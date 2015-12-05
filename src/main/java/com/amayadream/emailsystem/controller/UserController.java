@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.User;
 import com.amayadream.emailsystem.service.IUserService;
 import com.amayadream.emailsystem.util.DateUtil;
+import com.amayadream.emailsystem.util.MD5Util;
 import com.amayadream.emailsystem.util.RegexUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,7 @@ public class UserController {
 
     @RequestMapping(value = "/add")
     public String add(String username, String password1, String password2, String email,
-                      DateUtil dateUtil, RegexUtil regexUtil, RedirectAttributes redirectAttributes){
+                      DateUtil dateUtil, RegexUtil regexUtil, MD5Util md5Util, RedirectAttributes redirectAttributes){
         String firsttime = dateUtil.getDateTime24();
         if(username == null || username.equals("")){
             redirectAttributes.addFlashAttribute("ERROR","用户名不能为空!");
@@ -82,7 +83,7 @@ public class UserController {
                             if(!regexUtil.checkEmail(email)){
                                 redirectAttributes.addFlashAttribute("ERROR","邮箱格式不正确!");
                             }else {
-                                boolean flag = userService.insert(username, password1, email, firsttime, firsttime, 1);
+                                boolean flag = userService.insert(username, md5Util.MD5(password1) , email, firsttime, firsttime, 1);
                                 if(flag){
                                     redirectAttributes.addFlashAttribute("INFO","成功添加"+ username +"用户!");
                                 }else{

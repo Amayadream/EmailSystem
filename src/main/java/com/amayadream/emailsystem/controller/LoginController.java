@@ -3,6 +3,7 @@ package com.amayadream.emailsystem.controller;
 import com.amayadream.emailsystem.pojo.User;
 import com.amayadream.emailsystem.service.IUserService;
 import com.amayadream.emailsystem.util.DateUtil;
+import com.amayadream.emailsystem.util.MD5Util;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,7 +26,7 @@ public class LoginController {
     private User user;
 
     @RequestMapping(value = "/login")
-    public String login(String username, String password, HttpSession session, RedirectAttributes redirectAttributes, DateUtil dateUtil){
+    public String login(String username, String password, HttpSession session, RedirectAttributes redirectAttributes, DateUtil dateUtil, MD5Util md5Util){
         if(username == null || username.equals("")){
             redirectAttributes.addFlashAttribute("info", "账号不能为空!!!");
             return "redirect:/login";
@@ -41,7 +42,7 @@ public class LoginController {
                 return "redirect:/login";
             }else{
                 if(user.getAvailable() == 1){
-                    if(password.equals(user.getPassword())){
+                    if(md5Util.MD5(password).equals(user.getPassword())){
                         userService.updateLasttime(user.getUsername(),dateUtil.getDateTime24());
                         session.setAttribute("loginStatus",true);
                         session.setAttribute("username",user.getUsername());
