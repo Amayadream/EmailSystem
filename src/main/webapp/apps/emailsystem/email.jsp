@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String path = request.getContextPath();%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +12,11 @@
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/scojs.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+  <style>
+    .table th,.table td {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -19,11 +27,11 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="<%=path%>/index"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
+    <a class="navbar-brand" href="<%=path%>/email"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
   </div>
   <div class="collapse navbar-collapse" id="example-navbar-collapse">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="<%=path%>/index"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
+      <li class="active"><a href="<%=path%>/email"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
       <li><a href="<%=path%>/receiver"><span class="glyphicon glyphicon-inbox"></span> 收信箱</a></li>
       <li><a href="<%=path%>/contact"><span class="glyphicon glyphicon-list-alt"></span> 通讯录</a></li>
       <li><a href="<%=path%>/setting"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
@@ -141,45 +149,78 @@
       </div>
 
       <table class="table">
-        <th>收信人</th>
+        <th>#</th>
         <th>标题</th>
+        <th>收信人</th>
         <th>日期</th>
         <th>状态</th>
         <th width="10%">附件</th>
         <th width="10%">操作</th>
-        <tr>
-          <td>产品 A</td>
-          <td>200</td>
-          <td>200</td>
-          <td><span class="label label-success">Success</span></td>
-          <td id="showfile">
-            <button type="button" class="btn btn-info" title="附件标题" data-container="body" data-toggle="popover"
-                    dataplacement="top" data-content="file.txt">
-              <span class="glyphicon glyphicon-paperclip"></span> 附件
-            </button>
-          </td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#detailModel">
-                    <span class="glyphicon glyphicon-eye-open"></span> 详细
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#" data-toggle="modal" data-target="#deleteModel">
-                    <span class="glyphicon glyphicon-trash"></span> 删除
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
+        <c:forEach items="${page.result}" var="email" varStatus="status">
+          <tr>
+            <td>${status.index + 1}</td>
+            <td>${email.subject}</td>
+            <td>
+              <!-- 这里接收的email.emails为收信人,类型为Stirng,多个收信人用分号隔开 -->
+              <!-- 所以这里进行切割并循环,再分块展示,较为美观 -->
+              <c:forEach items="${fn:split(email.emails,';')}" var="receiver" varStatus="index">
+                <c:if test="${email.status == 1}">
+                  <span class="label label-success">${receiver}</span>
+                </c:if>
+                <c:if test="${email.status == 0}">
+                  <span class="label label-default">${receiver}</span>
+                </c:if>
+              </c:forEach>
+            </td>
+            <td>
+              <c:if test="${email.status == 1}">
+                <span class="label label-success">${email.sendtime}</span>
+              </c:if>
+              <c:if test="${email.status == 0}">
+                <span class="label label-default">${email.sendtime}</span>
+              </c:if>
+            </td>
+            <td>
+              <c:if test="${email.status == 1}">
+                <span class="label label-success">发送成功</span>
+              </c:if>
+              <c:if test="${email.status == 0}">
+                <span class="label label-default">发送失败</span>
+              </c:if>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-success" id="showfile"><span class="glyphicon glyphicon-paperclip"></span> 附件</button>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-menu-hamburger"></span> 操作
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <c:if test="${email.status == 0}">
+                    <li>
+                      <a href="#" data-toggle="modal" data-target="#detailModel">
+                        <span class="glyphicon glyphicon-send"></span> 重新发送
+                      </a>
+                    </li>
+                  </c:if>
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#detailModel">
+                      <span class="glyphicon glyphicon-eye-open"></span> 详细
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a href="#" data-toggle="modal" data-target="#deleteModel">
+                      <span class="glyphicon glyphicon-trash"></span> 删除
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
   </div>	<!-- container end -->
@@ -262,6 +303,7 @@
 <script src="<%=path%>/plugins/ueditor/ueditor.all.js"></script>
 <script src="<%=path%>/plugins/scojs/js/sco.message.js"></script>
 <script src="<%=path%>/plugins/scojs/js/sco.modal.js"></script>
+<script src="<%=path%>/plugins/scojs/js/sco.tooltip.js"></script>
 
 <script type="text/javascript">
   var index = 1;
@@ -342,8 +384,9 @@
     forceParse: 0
   });
 
-  $('#showfile button').each(function(){
-    $(this).popover({placement: "right",trigger: "hover"});
+  $('#showfile').scojs_tooltip({
+    content : "附件在此",
+    position : "n"
   });
 
   $('#delete-email').on('click', function(e) {

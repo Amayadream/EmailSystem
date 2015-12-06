@@ -45,6 +45,8 @@ public interface IContactService {
      */
     public List<Contact> selectContactByGroupid(String groupid, String userid);
 
+    public Contact selectContactByEmail(String userid, String email);
+
     /**
      * 查询联系人总数
      * @param userid

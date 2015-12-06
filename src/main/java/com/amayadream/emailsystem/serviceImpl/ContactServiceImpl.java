@@ -50,6 +50,12 @@ public class ContactServiceImpl implements IContactService {
         return contactDao.selectContactByGroupid(contact);
     }
 
+    public Contact selectContactByEmail(String userid, String email){
+        contact.setUserid(userid);
+        contact.setEmail(email);
+        return contactDao.selectContactByEmail(contact);
+    }
+
     public Contact count(String userid) {
         return contactDao.count(userid);
     }

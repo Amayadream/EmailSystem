@@ -17,11 +17,6 @@ public class RouteController {
         return "apps/emailsystem/login";
     }
 
-    @RequestMapping("index")
-    public String index(){
-        return "apps/emailsystem/index";
-    }
-
     @RequestMapping("receiver")
     public String receiver(){
         return "apps/emailsystem/receiver";

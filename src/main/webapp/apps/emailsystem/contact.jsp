@@ -28,11 +28,11 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="<%=path%>/index"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
+    <a class="navbar-brand" href="<%=path%>/email"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
   </div>
   <div class="collapse navbar-collapse" id="example-navbar-collapse">
     <ul class="nav navbar-nav">
-      <li><a href="<%=path%>/index"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
+      <li><a href="<%=path%>/email"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
       <li><a href="<%=path%>/receiver"><span class="glyphicon glyphicon-inbox"></span> 收信箱</a></li>
       <li class="active"><a href="<%=path%>/contact"><span class="glyphicon glyphicon-list-alt"></span> 通讯录</a></li>
       <li><a href="<%=path%>/setting"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>

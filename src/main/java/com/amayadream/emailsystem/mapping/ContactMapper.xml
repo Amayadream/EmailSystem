@@ -55,6 +55,12 @@
     AND GROUPID = #{groupid}
   </select>
 
+  <select id="selectContactByEmail" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
+    SELECT * FROM CONTACT
+    WHERE EMAIL = #{email}
+    AND USERID = #{userid}
+  </select>
+
   <!-- 查询联系人数量 -->
   <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
     SELECT COUNT(CID) CID FROM CONTACT

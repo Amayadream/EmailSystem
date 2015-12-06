@@ -22,6 +22,8 @@ public interface IContactDao {
 
     public List<Contact> selectContactByGroupid(Contact contact);
 
+    public Contact selectContactByEmail(Contact contact);
+
     public Contact count(String userid);
 
     public Contact countByGroup(Contact contact);

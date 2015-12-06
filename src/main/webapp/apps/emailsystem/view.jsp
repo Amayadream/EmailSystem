@@ -17,11 +17,11 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="<%=path%>/index.jsp"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
+    <a class="navbar-brand" href="<%=path%>/email"><span class="glyphicon glyphicon-envelope"> </span> 电子邮件系统</a>
   </div>
   <div class="collapse navbar-collapse" id="example-navbar-collapse">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="<%=path%>/index"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
+      <li class="active"><a href="<%=path%>/email"><span class="glyphicon glyphicon-send"></span> 发信箱</a></li>
       <li><a href="<%=path%>/receiver"><span class="glyphicon glyphicon-inbox"></span> 收信箱</a></li>
       <li><a href="<%=path%>/contact"><span class="glyphicon glyphicon-list-alt"></span> 通讯录</a></li>
       <li><a href="<%=path%>/setting"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
@@ -56,7 +56,7 @@
 <div class="container-fluid">
   <div class="page-header">
     <h1><span class="glyphicon glyphicon-envelope"></span> 邮件详情
-      <button id="addemail" class="btn btn-primary" onclick="javascript:window.location.href='<%=path%>/index'"><span class="glyphicon glyphicon-arrow-left"></span> 返回</button></h1>
+      <button id="addemail" class="btn btn-primary" onclick="javascript:window.location.href='<%=path%>/email'"><span class="glyphicon glyphicon-arrow-left"></span> 返回</button></h1>
   </div>
 
   <div class="col-md-12">

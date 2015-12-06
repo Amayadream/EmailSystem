@@ -47,7 +47,7 @@ public class LoginController {
                         session.setAttribute("loginStatus",true);
                         session.setAttribute("username",user.getUsername());
                         session.setAttribute("userid",user.getId());
-                        return "redirect:/index";
+                        return "redirect:/email";
                     }
                     else{
                         redirectAttributes.addFlashAttribute("info", "账号或密码错误!!!");
