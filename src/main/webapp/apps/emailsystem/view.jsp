@@ -1,11 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String path = request.getContextPath();%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>邮件详情</title>
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/scojs.css">
 
 </head>
 <body>
@@ -60,35 +64,74 @@
   </div>
 
   <div class="col-md-12">
-    <h2>这是邮件标题</h2>
+    <h2>${email.subject}</h2>
     <hr>
     <table class="table table-bordered">
-      <th>创建时间</th>
+      <th>收件人</th>
       <th>发送时间</th>
       <th>状态</th>
       <th>附件</th>
+      <%--<th>下载</th>--%>
       <tr>
-        <td>2015.9.20</td>
-        <td>2015.9.20</td>
-        <td><span class="label label-success">Success</span></td>
-        <td id="showfile">
-          <button type="button" class="btn btn-sm btn-info" title="附件标题" data-container="body" data-toggle="popover"
-                  dataplacement="top" data-content="file.txt">
-            <span class="glyphicon glyphicon-download-alt"></span> 附件
-          </button>
+        <td>
+          <c:forEach items="${fn:split(email.emails,';')}" var="receiver" varStatus="index">
+            <c:if test="${email.status == 1}">
+              <span class="label label-success">${receiver}</span>
+            </c:if>
+            <c:if test="${email.status == 0}">
+              <span class="label label-default">${receiver}</span>
+            </c:if>
+          </c:forEach>
         </td>
+        <td>
+          <c:if test="${email.status == 1}">
+            <span class="label label-success">${email.sendtime}</span>
+          </c:if>
+          <c:if test="${email.status == 0}">
+            <span class="label label-default">${email.sendtime}</span>
+          </c:if>
+        </td>
+        <td>
+          <c:if test="${email.status == 1}">
+            <span class="label label-success">发送成功</span>
+          </c:if>
+          <c:if test="${email.status == 0}">
+            <span class="label label-default">发送失败</span>
+          </c:if>
+        </td>
+        <td>
+          <c:if test="${file != ''}">
+            <c:forEach items="${fn:split(file,';')}" var="f" varStatus="index">
+            <c:forEach items="${fn:split(email.files,';')}" var="herf" varStatus="index">
+              <c:if test="${email.status == 1}">
+                <span class="label label-info"><a href="<%=path%>/email/download?id=${herf}">${f}</a></span>
+              </c:if>
+              <c:if test="${email.status == 0}">
+                <span class="label label-default"><a href="<%=path%>/email/download?id=${herf}">${f}</a></span>
+              </c:if>
+            </c:forEach>
+            </c:forEach>
+          </c:if>
+        </td>
+        <%--<td>--%>
+          <%--<c:if test="${file != ''}">--%>
+            <%--<c:forEach items="${fn:split(file,';')}" var="href" varStatus="i">--%>
+              <%--<c:if test="${email.status == 1}">--%>
+                <%--<span class="label label-success"><a href="<%=path%>/email/download?id='${href}'">${f}</a></span>--%>
+              <%--</c:if>--%>
+              <%--<c:if test="${email.status == 0}">--%>
+                <%--<span class="label label-default"><a href="<%=path%>/email/download?id='${href}'">${f}</a></span>--%>
+              <%--</c:if>--%>
+            <%--</c:forEach>--%>
+          <%--</c:if>--%>
+        <%--</td>--%>
       </tr>
     </table>
 
     <a href="" id="showcontent"><span class="glyphicon glyphicon-eye-open"></span> 查看邮件内容</a>
     <div id="content" style="display: none;">
-      <div style="border:1px solid gray">
-        这是邮件的详情,building<br>
-        ......<br>
-        ......<br>
-        ......<br>
-        ......<br>
-        ......<br>
+      <div>
+        ${email.content}
       </div>
     </div>
   </div>	<!-- col end -->
@@ -97,8 +140,8 @@
 
 <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=path%>/plugins/scojs/js/sco.tooltip.js"></script>
 <script src="<%=path%>/static/js/main.js"></script>
-
 
 <script type="text/javascript">
   $('#showcontent').click(function() {

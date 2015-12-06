@@ -12,6 +12,7 @@
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/sco.message.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/scojs/css/scojs.css">
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" type="text/css" href="<%=path%>/static/css/pagination.css">
   <style>
     .table th,.table td {
       text-align: center;
@@ -154,8 +155,8 @@
         <th>收信人</th>
         <th>日期</th>
         <th>状态</th>
-        <th width="10%">附件</th>
-        <th width="10%">操作</th>
+        <th >附件</th>
+        <th>操作</th>
         <c:forEach items="${page.result}" var="email" varStatus="status">
           <tr>
             <td>${status.index + 1}</td>
@@ -189,7 +190,14 @@
               </c:if>
             </td>
             <td>
-              <button type="button" class="btn btn-sm btn-success" id="showfile"><span class="glyphicon glyphicon-paperclip"></span> 附件</button>
+              <c:if test="${email.files != ''}">
+                <c:if test="${email.status == 1}">
+                  <span class="label label-success" data-trigger="tooltip" data-content="${email.files}"> 包含附件</span>
+                </c:if>
+                <c:if test="${email.status == 0}">
+                  <span class="label label-default" data-trigger="tooltip" data-content="${email.files}"> 包含附件</span>
+                </c:if>
+              </c:if>
             </td>
             <td>
               <div class="btn-group">
@@ -206,9 +214,7 @@
                     </li>
                   </c:if>
                   <li>
-                    <a href="#" data-toggle="modal" data-target="#detailModel">
-                      <span class="glyphicon glyphicon-eye-open"></span> 详细
-                    </a>
+                    <a href="<%=path%>/email/view/${email.eid}"><span class="glyphicon glyphicon-eye-open"></span> 详细</a>
                   </li>
                   <li class="divider"></li>
                   <li>
@@ -223,6 +229,9 @@
         </c:forEach>
       </table>	<!-- table end -->
     </div>	<!-- panel end -->
+    <div style="text-align:center">
+      <tags:pagination page="${page}" paginationSize="${page.pageSize}"/>
+    </div>
   </div>	<!-- container end -->
 </div>	<!-- col end -->
 
@@ -382,11 +391,6 @@
     startView: 2,
     minView: 2,
     forceParse: 0
-  });
-
-  $('#showfile').scojs_tooltip({
-    content : "附件在此",
-    position : "n"
   });
 
   $('#delete-email').on('click', function(e) {

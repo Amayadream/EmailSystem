@@ -7,16 +7,16 @@ import com.amayadream.emailsystem.service.IContactService;
 import com.amayadream.emailsystem.service.IEmailService;
 import com.amayadream.emailsystem.service.ISettingService;
 import com.amayadream.emailsystem.util.*;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -79,6 +79,14 @@ public class EmailController {
                 }
             }
             list.get(index).setEmails(name);
+            String file = "";
+            if(item.getFiles()!=null){      //处理附件显示
+                String[] files = fileUtil.getStringArrayByString(item.getFiles(),";");
+                for(String f : files){
+                    file += f.substring(f.lastIndexOf("/")+1) + ";";
+                }
+            }
+            list.get(index).setFiles(file);
             index += 1;
         }
         int count = Integer.parseInt(emailService.count(userid).getEid());
@@ -86,5 +94,51 @@ public class EmailController {
         page.setResult(list);
         model.addAttribute("page",page);
         return "apps/emailsystem/email";
+    }
+
+    @RequestMapping(value = "view/{eid}")
+    public String id(@ModelAttribute("userid") String userid, @PathVariable("eid") String eid, FileUtil fileUtil, RedirectAttributes redirectAttributes) {
+        Email email = emailService.selectEmailById(userid, eid);
+        String[] receiver = fileUtil.getStringArrayByString(email.getEmails(), ";");      //使用工具类,将收信人按照分号切割开
+        String name = "";       //收件人姓名
+        for (String rec : receiver) {     //遍历数组,分次查询....这里写的优点挫,将就做吧
+            Contact contact = contactService.selectContactByEmail(userid, rec);
+            if (contact != null) {
+                name += contact.getName() + ";";
+            } else {
+                name += rec + ";";
+            }
+        }
+        email.setEmails(name);
+        String file = "";
+        if(email.getFiles()!=null){      //处理附件显示
+            String[] files = fileUtil.getStringArrayByString(email.getFiles(),";");
+            for(String f : files){
+                file += f.substring(f.lastIndexOf("/")+1) + ";";
+            }
+        }
+        redirectAttributes.addFlashAttribute("email",email);
+        redirectAttributes.addFlashAttribute("file",file);
+        return "redirect:/view";
+    }
+
+    @RequestMapping("download")
+    public void download(@RequestParam("id") String eid, HttpServletRequest request, HttpServletResponse response){
+        try{
+            String fileUrl = eid.substring(0,eid.lastIndexOf("/"));
+            String fileName = eid.substring(eid.lastIndexOf("/")+1);
+            String fileNameEncode = new String(fileName.getBytes(),"ISO8859-1");
+            response.setContentType("application/x-msdownload");
+            FileInputStream FileInputStreamRef = new FileInputStream(new File(request.getSession().getServletContext().getRealPath(fileUrl)+"\\"+fileName));
+            response.setHeader("Content-Disposition","attachment;filename="+fileNameEncode);
+            OutputStream osRef = response.getOutputStream();
+            IOUtils.copy(FileInputStreamRef,osRef);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
