@@ -71,7 +71,6 @@
       <th>发送时间</th>
       <th>状态</th>
       <th>附件</th>
-      <%--<th>下载</th>--%>
       <tr>
         <td>
           <c:forEach items="${fn:split(email.emails,';')}" var="receiver" varStatus="index">
@@ -101,8 +100,8 @@
         </td>
         <td>
           <c:if test="${file != ''}">
-            <c:forEach items="${fn:split(file,';')}" var="f" varStatus="index">
-            <c:forEach items="${fn:split(email.files,';')}" var="herf" varStatus="index">
+            <c:forEach items="${fn:split(file,';')}" var="f" varStatus="index">           <!-- 遍历按照分号切割好的文件名称 -->
+            <c:forEach items="${fn:split(email.files,';')}" var="herf" varStatus="index"> <!-- 遍历按照分号切割好的文件的真实地址 -->
               <c:if test="${email.status == 1}">
                 <span class="label label-info"><a href="<%=path%>/email/download?id=${herf}">${f}</a></span>
               </c:if>
@@ -113,18 +112,6 @@
             </c:forEach>
           </c:if>
         </td>
-        <%--<td>--%>
-          <%--<c:if test="${file != ''}">--%>
-            <%--<c:forEach items="${fn:split(file,';')}" var="href" varStatus="i">--%>
-              <%--<c:if test="${email.status == 1}">--%>
-                <%--<span class="label label-success"><a href="<%=path%>/email/download?id='${href}'">${f}</a></span>--%>
-              <%--</c:if>--%>
-              <%--<c:if test="${email.status == 0}">--%>
-                <%--<span class="label label-default"><a href="<%=path%>/email/download?id='${href}'">${f}</a></span>--%>
-              <%--</c:if>--%>
-            <%--</c:forEach>--%>
-          <%--</c:if>--%>
-        <%--</td>--%>
       </tr>
     </table>
 
