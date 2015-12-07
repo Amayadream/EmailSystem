@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.amayadream.emailsystem.dao.IGroupDao" >
   <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Group" >
-    <id column="GID" property="gid" />
-    <result column="USERID" property="userid" />
-    <result column="GROUPNAME" property="groupname" />
+    <id column="GID" property="gid" jdbcType="VARCHAR" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="GROUPNAME" property="groupname" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -19,7 +19,7 @@
         FROM (
           SELECT DISTINCT A.*, (SELECT COUNT(*) FROM CONTACT WHERE GROUPID = A.GID) COUNT
           FROM GROUPS A JOIN CONTACT B ON A.USERID = B.USERID
-          WHERE A.USERID = #{userid}
+          WHERE A.USERID = #{userid, jdbcType=VARCHAR}
           ORDER BY A.GID DESC
         ) A
       )
@@ -30,52 +30,52 @@
   <select id="selectGroupById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Group" >
     SELECT <include refid="Base_Column_List" />
     FROM GROUPS
-    WHERE GID = #{gid}
-    AND USERID = #{userid}
+    WHERE GID = #{gid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 根据分组名称查询分组 -->
   <select id="selectGroupByName" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Group" >
     SELECT <include refid="Base_Column_List" />
     FROM GROUPS
-    WHERE GROUPNAME = #{groupname}
-    AND USERID = #{userid}
+    WHERE GROUPNAME = #{groupname, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 查询所有分组名称,用于下拉菜单 -->
   <select id="selectAllGroup" resultMap="BaseResultMap" parameterType="string" >
     SELECT DISTINCT GID, GROUPNAME
     FROM GROUPS
-    WHERE USERID = #{userid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <select id="count" resultMap="BaseResultMap" parameterType="string">
-    SELECT COUNT(GID) GID FROM GROUPS WHERE USERID = #{userid}
+    SELECT COUNT(GID) GID FROM GROUPS WHERE USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 插入分组 -->
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Group" >
     INSERT INTO GROUPS (GID, USERID, GROUPNAME)
-    VALUES (sys_guid(), #{userid}, #{groupname})
+    VALUES (sys_guid(), #{userid, jdbcType=VARCHAR}, #{groupname, jdbcType=VARCHAR})
   </insert>
 
   <!-- 更新分组 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Group">
     UPDATE GROUPS
-    SET GROUPNAME = #{groupname}
-    WHERE GID = #{gid} AND USERID = #{userid}
+    SET GROUPNAME = #{groupname, jdbcType=VARCHAR}
+    WHERE GID = #{gid, jdbcType=VARCHAR} AND USERID = #{userid, jdbcType=VARCHAR}
   </update>
 
   <!-- 删除分组 -->
   <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Group" >
     DELETE FROM GROUPS
-    WHERE GID = #{gid} AND USERID = #{userid}
+    WHERE GID = #{gid, jdbcType=VARCHAR} AND USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 
   <!-- 删除某个用户的所有分组 -->
   <delete id="deleteAllGroup" parameterType="string" >
     DELETE FROM GROUPS
-    WHERE USERID = #{userid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 
 </mapper>

@@ -3,11 +3,11 @@
 <mapper namespace="com.amayadream.emailsystem.dao.IContactDao" >
 
   <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Contact" >
-    <id column="CID" property="cid" />
-    <result column="USERID" property="userid"/>
-    <result column="NAME" property="name" />
-    <result column="EMAIL" property="email" />
-    <result column="GROUPID" property="groupid" />
+    <id column="CID" property="cid" jdbcType="VARCHAR"/>
+    <result column="USERID" property="userid" jdbcType="VARCHAR"/>
+    <result column="NAME" property="name" jdbcType="VARCHAR"/>
+    <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+    <result column="GROUPID" property="groupid" jdbcType="VARCHAR"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -23,7 +23,7 @@
           SELECT C.CID,C.USERID,C.NAME,C.EMAIL,G.GROUPNAME GROUPID FROM CONTACT C
           INNER JOIN GROUPS G
           ON C.GROUPID = G.GID
-          WHERE C.USERID = #{userid}
+          WHERE C.USERID = #{userid, jdbcType=VARCHAR}
           ORDER BY C.CID DESC
         ) A
       )
@@ -34,8 +34,8 @@
   <select id="selectContactById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact" >
     SELECT <include refid="Base_Column_List" />
     FROM CONTACT
-    WHERE CID = #{cid}
-    AND USERID = #{userid}
+    WHERE CID = #{cid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 根据姓名查询联系人 -->
@@ -43,56 +43,56 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM CONTACT
-    WHERE NAME = #{name}
-    AND USERID = #{userid}
+    WHERE NAME = #{name, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 根据分组编号查询所有联系人 -->
   <select id="selectContactByGroupid" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
     SELECT USERID,NAME,EMAIL,(SELECT GROUPNAME FROM GROUPS WHERE GID = #{groupid}) GROUPID
     FROM CONTACT
-    WHERE USERID = #{userid}
-    AND GROUPID = #{groupid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND GROUPID = #{groupid, jdbcType=VARCHAR}
   </select>
 
   <select id="selectContactByEmail" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
     SELECT * FROM CONTACT
-    WHERE EMAIL = #{email}
-    AND USERID = #{userid}
+    WHERE EMAIL = #{email, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 查询联系人数量 -->
   <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact">
     SELECT COUNT(CID) CID FROM CONTACT
-    WHERE USERID = #{userid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 查询每个分组下联系人个数 -->
   <select id="countByGroup" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Contact" >
     SELECT COUNT(*) CID FROM CONTACT
-    WHERE USERID = #{userid}
-    AND GROUPID = #{groupid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND GROUPID = #{groupid, jdbcType=VARCHAR}
   </select>
 
   <!-- 插入联系人 -->
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Contact" >
     INSERT INTO CONTACT (CID,USERID, NAME, EMAIL ,GROUPID)
-    VALUES (sys_guid(),#{userid}, #{name}, #{email}, #{groupid})
+    VALUES (sys_guid(),#{userid, jdbcType=VARCHAR}, #{name, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{groupid, jdbcType=VARCHAR})
   </insert>
 
   <!-- 更新联系人 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Contact">
     UPDATE CONTACT
-    SET NAME = #{name}, EMAIL = #{email}, GROUPID = #{groupid}
-    WHERE USERID = #{userid}
-    AND CID = #{cid}
+    SET NAME = #{name, jdbcType=VARCHAR}, EMAIL = #{email, jdbcType=VARCHAR}, GROUPID = #{groupid, jdbcType=VARCHAR}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND CID = #{cid, jdbcType=VARCHAR}
   </update>
 
   <!-- 删除联系人 -->
   <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Contact" >
     DELETE FROM CONTACT
-    WHERE CID = #{cid}
-    AND USERID = #{userid}
+    WHERE CID = #{cid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 
 </mapper>

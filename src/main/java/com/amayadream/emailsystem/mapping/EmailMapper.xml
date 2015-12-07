@@ -4,13 +4,13 @@
 
   <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Email" >
     <id column="Eid" property="eid" />
-    <result column="USERID" property="userid"/>
-    <result column="EMAILS" property="emails" />
-    <result column="SUBJECT" property="subject" />
-    <result column="CONTENT" property="content" />
-    <result column="SENDTIME" property="sendtime" />
-    <result column="FILES" property="files" />
-    <result column="STATUS" property="status" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR"/>
+    <result column="EMAILS" property="emails" jdbcType="VARCHAR"/>
+    <result column="SUBJECT" property="subject" jdbcType="VARCHAR"/>
+    <result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+    <result column="SENDTIME" property="sendtime" jdbcType="VARCHAR"/>
+    <result column="FILES" property="files" jdbcType="VARCHAR"/>
+    <result column="STATUS" property="status" jdbcType="INTEGER"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -24,7 +24,7 @@
     SELECT A.*,ROWNUM RN
     FROM (
     SELECT * FROM EMAIL
-    WHERE USERID = #{userid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
     ORDER BY EID DESC
     ) A
     )
@@ -35,35 +35,35 @@
   <select id="selectEmailById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Email" >
     SELECT <include refid="Base_Column_List" />
     FROM EMAIL
-    WHERE EID = #{eid}
-    AND USERID = #{userid}
+    WHERE EID = #{eid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 查询邮件数量 -->
   <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Email">
     SELECT COUNT(EID) EID FROM EMAIL
-    WHERE USERID = #{userid}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
   </select>
 
   <!-- 添加邮件 -->
   <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Email" >
     INSERT INTO EMAIL (EID,USERID, EMAILS, SUBJECT, CONTENT, SENDTIME, FILES, STATUS)
-    VALUES (sys_guid(),#{userid}, #{emails}, #{subject}, #{content}, #{sendtime}, #{files}, #{status})
+    VALUES (sys_guid(),#{userid, jdbcType=VARCHAR}, #{emails, jdbcType=VARCHAR}, #{subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, #{sendtime, jdbcType=VARCHAR}, #{files, jdbcType=VARCHAR}, #{status, jdbcType=INTEGER})
   </insert>
 
   <!-- 更新邮件状态 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Email">
     UPDATE EMAIL
-    SET STATUS= #{status}
-    WHERE USERID = #{userid}
-    AND CID = #{cid}
+    SET STATUS= #{status, jdbcType=INTEGER}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND CID = #{cid, jdbcType=VARCHAR}
   </update>
 
   <!-- 删除邮件 -->
   <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Email" >
     DELETE FROM EMAIL
-    WHERE EID = #{eid}
-    AND USERID = #{userid}
+    WHERE EID = #{eid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 
 </mapper>
