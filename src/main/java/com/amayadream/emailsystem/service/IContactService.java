@@ -90,4 +90,6 @@ public interface IContactService {
      * @return
      */
     public boolean delete(String cid, String userid);
+
+    public boolean deleteAll(String userid);
 }

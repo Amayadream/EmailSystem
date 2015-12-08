@@ -95,4 +95,10 @@
     AND USERID = #{userid, jdbcType=VARCHAR}
   </delete>
 
+  <!-- 删除所有联系人 -->
+  <delete id="deleteAll" parameterType="string" >
+    DELETE FROM CONTACT
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </delete>
+
 </mapper>

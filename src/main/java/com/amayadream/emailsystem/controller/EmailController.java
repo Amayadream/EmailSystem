@@ -56,7 +56,24 @@ public class EmailController {
             redirectAttributes.addFlashAttribute("INFO","发送成功!");
         }else{
             emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), relative_file, 0);
-            redirectAttributes.addFlashAttribute("ERROR","各种原因发送失败,自己猜吧!");
+            redirectAttributes.addFlashAttribute("ERROR","各种原因发送失败!");
+        }
+        return "redirect:/email";
+    }
+
+    @RequestMapping(value = "sendAgain/{eid}")
+    public String sendAgain(@ModelAttribute("userid") String userid,@PathVariable("eid") String eid, MailUtil mailUtil, FileUtil fileUtil, RedirectAttributes redirectAttributes){
+        Setting setting = settingService.selectSettingByUserid(userid);
+        Email email = emailService.selectEmailById(userid, eid);
+        File[] files = fileUtil.getFileArrayByString(email.getFiles(), ";");
+        String[] receiver = fileUtil.getStringArrayByString(email.getEmails(),";");
+        mailUtil.init(setting.getServer(),setting.getPort(),setting.getSendmail(),setting.getSendpass(),email.getSubject(),setting.getSendname(),email.getContent(),receiver,null,null,files);
+        String meg = mailUtil.sendMail(true);
+        if (meg == "success") {
+            emailService.update(userid, eid, 1);
+            redirectAttributes.addFlashAttribute("INFO","发送成功!");
+        }else{
+            redirectAttributes.addFlashAttribute("ERROR","各种原因发送失败!");
         }
         return "redirect:/email";
     }
@@ -130,7 +147,7 @@ public class EmailController {
             String fileNameEncode = new String(fileName.getBytes(),"ISO8859-1");
             response.setContentType("application/x-msdownload");
             FileInputStream FileInputStreamRef = new FileInputStream(new File(request.getSession().getServletContext().getRealPath(fileUrl)+"\\"+fileName));
-            response.setHeader("Content-Disposition","attachment;filename="+fileNameEncode);
+            response.setHeader("Content-Disposition","attachment;filename=\""+fileNameEncode+"\"");     //文件名经过处理,防止有空格时出现文件名补全的情况
             OutputStream osRef = response.getOutputStream();
             IOUtils.copy(FileInputStreamRef,osRef);
         } catch (UnsupportedEncodingException e) {

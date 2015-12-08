@@ -35,18 +35,19 @@ public class LoginFilter extends OncePerRequestFilter {
             if (doFilter) {
                 // 执行过滤
                 if (null == request.getSession().getAttribute("loginStatus")) {
-                    System.out.printf(uri + "=>没有登陆,过滤器自动过滤!" + "\n");
-                    response.setContentType("text/html; charset=utf-8");
-                    PrintWriter out = response.getWriter();
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("<script type=\"text/javascript\">");
-                    builder.append("alert('网页过期，请重新登录！');");
-                    builder.append("window.location.href='");
-                    builder.append(contextPath + LOGIN_URI);
-                    builder.append("';");
-                    builder.append("</script>");
-                    out.print(builder.toString());
+//                    System.out.printf(uri + "=>没有登陆,过滤器自动过滤!" + "\n");
+//                    response.setContentType("text/html; charset=utf-8");
+//                    PrintWriter out = response.getWriter();
+//                    StringBuilder builder = new StringBuilder();
+//                    builder.append("<script type=\"text/javascript\">");
+//                    builder.append("alert('网页过期，请重新登录！');");
+//                    builder.append("window.location.href='");
+//                    builder.append(contextPath + LOGIN_URI);
+//                    builder.append("';");
+//                    builder.append("</script>");
+//                    out.print(builder.toString());
 //                    response.sendRedirect(contextPath + LOGIN_URL);
+                    response.sendRedirect(contextPath + "/login?timeout=true");
                 } else {
                     // 如果session中存在登录者实体，则继续
                     filterChain.doFilter(request, response);

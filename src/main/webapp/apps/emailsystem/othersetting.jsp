@@ -6,7 +6,11 @@
   <meta charset="utf-8">
   <title>设置</title>
   <link rel="stylesheet" type="text/css" href="<%=path%>/plugins/bootstrap/css/bootstrap.min.css">
-
+  <style>
+    b{
+      color:red;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -65,18 +69,17 @@
     </ul>
   </div>
   <div class="col-md-9 settings">
-    <form class="form-horizontal" enctype="multipart/form-data" method="post">
       <div class="well general" style="margin-top:0">
         <div class="control-group">
-          <label for="email" class="control-label">邮箱账号</label>
+          <label for="email" class="control-label">附件目录</label>
           <div class="controls">
-            <input type="text" class="form-control" placeholder="发信人邮箱账号" name="email" id="email">
+            <input type="text" class="form-control" placeholder="输入您选择附件上传的目录,默认为根目录下upload文件夹" name="email" id="email">
           </div>
         </div>
         <div class="control-group">
-          <label for="sendname" class="control-label">发信昵称</label>
+          <label for="sendname" class="control-label">分页大小</label>
           <div class="controls">
-            <input type="text" class="form-control" placeholder="发信昵称" name="sendname" id="sendname">
+            <input type="text" class="form-control" placeholder="输入您选择的分页大小,默认为15条记录/页" name="sendname" id="sendname">
           </div>
         </div>
         <div class="control-group">
@@ -101,16 +104,51 @@
         </div>
 
       </div>
-      <div class="form-actions">
+      <div>
         <button class="btn btn-primary " type="submit">保存</button>
+        <button class="btn btn-danger" onclick="destory_all_msg();" style="float:right">删除此账号</button>
       </div>
-    </form>
   </div>
 </div>	<!-- col end -->
+
+<div class="modal fade" id="delete-model" tabindex="-1" role="dialog" aria-labelledby="model2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="model2">
+          <span class="glyphicon glyphicon-warning-sign"></span> 警告
+        </h4>
+      </div>
+      <div class="modal-body">
+        <h4>
+          请注意,您正在请求<b>删除</b>你所登陆的账户!<br><br>
+          如果您确认删除,这将会从服务器上<b>完全清除</b>您的<b>所有信息</b>,包括发信箱,收信箱,联系人,分组以及您的设置,<br><br>
+          但是<b>不包括</b>存储在邮件服务器上的信息!<br><br>
+          确认删除?
+        </h4>
+      </div>
+      <div class="modal-footer">
+        <form action="<%=path%>/contact/delete" method="post">
+          <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> 摧毁账户</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 让我想想</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
 <script src="<%=path%>/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=path%>/static/js/main.js"></script>
+<script>
+  function destory_all_msg(){
+    $("#delete-model").modal({
+      backdrop : "static",
+      keyboard : false
+    });
+  }
+</script>
 </body>
 </html>

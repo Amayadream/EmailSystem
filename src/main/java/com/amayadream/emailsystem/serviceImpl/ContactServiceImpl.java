@@ -88,4 +88,8 @@ public class ContactServiceImpl implements IContactService {
         contact.setUserid(userid);
         return contactDao.delete(contact);
     }
+
+    public boolean deleteAll(String userid){
+        return contactDao.deleteAll(userid);
+    }
 }

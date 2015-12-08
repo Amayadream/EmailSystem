@@ -33,17 +33,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //            System.out.printf(url + "=>>>>>已登录,欢迎访问!" + "\n");
             return true;
         }else{
+            response.sendRedirect(contextPath + "/login?timeout=true");
 //            System.out.printf(url + "=>>>>>未登录,禁止访问!" + "\n");
-            response.setContentType("text/html; charset=utf-8");
-            PrintWriter out = response.getWriter();
-            StringBuilder builder = new StringBuilder();
-            builder.append("<script type=\"text/javascript\">");
-            builder.append("alert('网页过期，请重新登录！');");
-            builder.append("window.location.href='");
-            builder.append(contextPath + LOGIN_URI);
-            builder.append("';");
-            builder.append("</script>");
-            out.print(builder.toString());
+//            response.setContentType("text/html; charset=utf-8");
+//            PrintWriter out = response.getWriter();
+//            StringBuilder builder = new StringBuilder();
+//            builder.append("<script type=\"text/javascript\">");
+//            builder.append("alert('网页过期，请重新登录！');");
+//            builder.append("window.location.href='");
+//            builder.append(contextPath + LOGIN_URI);
+//            builder.append("';");
+//            builder.append("</script>");
+//            out.print(builder.toString());
 //            response.sendRedirect(contextPath + LOGIN_URI);
             return false;
         }

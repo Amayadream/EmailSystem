@@ -20,4 +20,5 @@ public interface IEmailDao {
     public boolean insert(Email email);
     public boolean update(Email email);
     public boolean delete(Email email);
+    public boolean deleteAll(String userid);
 }

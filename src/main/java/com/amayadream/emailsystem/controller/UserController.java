@@ -2,13 +2,15 @@ package com.amayadream.emailsystem.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.amayadream.emailsystem.pojo.User;
-import com.amayadream.emailsystem.service.IUserService;
+import com.amayadream.emailsystem.service.*;
 import com.amayadream.emailsystem.util.DateUtil;
 import com.amayadream.emailsystem.util.MD5Util;
 import com.amayadream.emailsystem.util.RegexUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -24,9 +26,18 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/user")
+@SessionAttributes("userid")
 public class UserController {
     @Resource
     private IUserService userService;
+    @Resource
+    private IContactService contactService;
+    @Resource
+    private IGroupService groupService;
+    @Resource
+    private ISettingService settingService;
+    @Resource
+    private IEmailService emailService;
     @Resource
     User user;
 
@@ -96,6 +107,15 @@ public class UserController {
             }
         }
         return "redirect:/index";
+    }
+
+    @RequestMapping(value = "destory")
+    public String destory(@ModelAttribute("userid") String userid){
+        contactService.deleteAll(userid);
+        groupService.deleteAllGroup(userid);
+        emailService.deleteAll(userid);
+        settingService.delete(userid);
+        return "redirect:/user/logout";
     }
 
 }

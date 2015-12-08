@@ -207,11 +207,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                   <c:if test="${email.status == 0}">
-                    <li>
-                      <a href="#" data-toggle="modal" data-target="#detailModel">
-                        <span class="glyphicon glyphicon-send"></span> 重新发送
-                      </a>
-                    </li>
+                    <li><a href="<%=path%>/email/sendAgain/${email.eid}"><span class="glyphicon glyphicon-send"></span> 重新发送</a></li>
                   </c:if>
                   <li>
                     <a href="<%=path%>/email/view/${email.eid}"><span class="glyphicon glyphicon-eye-open"></span> 详细</a>
@@ -283,7 +279,6 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>--%>
         <h4 class="modal-title" id="progress">
           <span class="glyphicon glyphicon-globe"></span> 发送中
         </h4>
@@ -295,10 +290,6 @@
           </div>
         </div>
       </div>
-      <%--<div class="modal-footer">--%>
-        <%--<button type="button" id="delete-email" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> 确认</button>--%>
-        <%--<button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> 关闭</button>--%>
-      <%--</div>--%>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -325,7 +316,6 @@
   $("#remove-file").click(function(){
     $("#upload div:last").remove();
   });
-
 
   var x = 101;
   var stop = 1;
@@ -367,7 +357,6 @@
     run();
     return true;
   }
-
 
   if("${INFO}"){
     $.scojs_message("${INFO}", $.scojs_message.TYPE_OK);

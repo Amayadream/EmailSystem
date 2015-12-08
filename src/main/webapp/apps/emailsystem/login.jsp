@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%String path = request.getContextPath();%>
 <!DOCTYPE html>
@@ -5,7 +6,10 @@
 <head>
   <title>登陆-电子邮件系统</title>
   <link href="<%=path%>/static/css/login.css" rel='stylesheet' type='text/css' />
+  <link href="<%=path%>/plugins/scojs/css/sco.message.css" rel='stylesheet' type='text/css' />
+  <link href="<%=path%>/plugins/scojs/css/scojs.css" rel='stylesheet' type='text/css' />
   <script src="<%=path%>/plugins/jquery/jquery-2.1.4.min.js"></script>
+  <script src="<%=path%>/plugins/scojs/js/sco.message.js"></script>
   <script src="<%=path%>/static/js/main.js"></script>
 </head>
 <body>
@@ -32,11 +36,18 @@
       <input type="submit" id="submit" value="Login" >
     </div>
   </form>
-
 </div>
 
 <script>
   $(function(){
+    <c:if test="${not empty param.timeout}">
+      $.scojs_message("连接超时,请重新登陆!", $.scojs_message.TYPE_ERROR);
+    </c:if>
+
+    if(${not empty username}){
+      location.href = "<%=path%>/email";
+    }
+
     if("${info}"){
       $('#submit').attr('value',"${info}").css('background','red');
     }

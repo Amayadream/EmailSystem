@@ -73,4 +73,8 @@ public class EmailServiceImpl implements IEmailService {
         return emailDao.delete(email);
     }
 
+    public boolean deleteAll(String userid){
+        return emailDao.deleteAll(userid);
+    }
+
 }
