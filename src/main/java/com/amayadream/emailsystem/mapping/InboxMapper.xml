@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.amayadream.emailsystem.dao.IInboxDao" >
+
+  <resultMap id="BaseResultMap" type="com.amayadream.emailsystem.pojo.Inbox" >
+    <id column="ID" property="id" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR"/>
+    <result column="SUBJECT" property="subject" jdbcType="VARCHAR"/>
+    <result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+    <result column="SENDMAIL" property="sendmail" jdbcType="VARCHAR"/>
+    <result column="RECEIVEMAIL" property="receivemail" jdbcType="VARCHAR"/>
+    <result column="SENDTIME" property="sendtime" jdbcType="VARCHAR"/>
+    <result column="ISREAD" property="isread" jdbcType="INTEGER"/>
+    <result column="FILES" property="files" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, USERID, SUBJECT, CONTENT, SENDMAIL, RECEIVEMAIL, SENDTIME, ISREAD, FILES
+  </sql>
+
+  <!-- 查询所有邮件 -->
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT * FROM
+    (
+    SELECT A.*,ROWNUM RN
+    FROM (
+    SELECT * FROM INBOX
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    ORDER BY ID DESC
+    ) A
+    )
+    WHERE RN BETWEEN #{startRow} AND #{endRow}
+  </select>
+
+  <!-- 根据邮件编号查询邮件 -->
+  <select id="selectInboxById" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Inbox" >
+    SELECT <include refid="Base_Column_List" />
+    FROM INBOX
+    WHERE ID = #{id, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 查询邮件数量 -->
+  <select id="count" resultMap="BaseResultMap" parameterType="com.amayadream.emailsystem.pojo.Inbox">
+    SELECT COUNT(ID) ID FROM INBOX
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 添加邮件 -->
+  <insert id="insert" parameterType="com.amayadream.emailsystem.pojo.Inbox" >
+    INSERT INTO INBOX (ID, USERID, SUBJECT, CONTENT, SENDMAIL, RECEIVEMAIL, SENDTIME, ISREAD, FILES)
+    VALUES (sys_guid(),#{userid, jdbcType=VARCHAR}, #{subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, #{sendmail, jdbcType=VARCHAR},  #{receivemail, jdbcType=VARCHAR}, #{sendtime, jdbcType=VARCHAR}, #{isread, jdbcType=INTEGER}, #{files, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 更新邮件状态 -->
+  <update id="update" parameterType="com.amayadream.emailsystem.pojo.Inbox">
+    UPDATE INBOX
+    SET STATUS= #{status, jdbcType=INTEGER}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND EID = #{eid, jdbcType=VARCHAR}
+  </update>
+
+  <!-- 删除邮件 -->
+  <delete id="delete" parameterType="com.amayadream.emailsystem.pojo.Inbox" >
+    DELETE FROM INBOX
+    WHERE EID = #{eid, jdbcType=VARCHAR}
+    AND USERID = #{userid, jdbcType=VARCHAR}
+  </delete>
+
+  <!-- 删除所有邮件 -->
+  <delete id="deleteAll" parameterType="string" >
+    DELETE FROM INBOX
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+  </delete>
+
+</mapper>
