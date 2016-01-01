@@ -53,11 +53,20 @@
   </insert>
 
   <!-- 更新邮件状态 -->
+  <update id="updateStatus" parameterType="com.amayadream.emailsystem.pojo.Inbox">
+    UPDATE INBOX
+    SET ISREAD= #{isread, jdbcType=INTEGER}
+    WHERE USERID = #{userid, jdbcType=VARCHAR}
+    AND ID = #{id, jdbcType=VARCHAR}
+  </update>
+
+  <!-- 更新邮件 -->
   <update id="update" parameterType="com.amayadream.emailsystem.pojo.Inbox">
     UPDATE INBOX
-    SET STATUS= #{status, jdbcType=INTEGER}
+    SET SUBJECT= #{isread, jdbcType=INTEGER}, CONTENT= #{isread, jdbcType=INTEGER}, SENDMAIL= #{isread, jdbcType=INTEGER}, RECEIVEMAIL= #{isread, jdbcType=INTEGER},
+
     WHERE USERID = #{userid, jdbcType=VARCHAR}
-    AND EID = #{eid, jdbcType=VARCHAR}
+    AND ID = #{id, jdbcType=VARCHAR}
   </update>
 
   <!-- 删除邮件 -->

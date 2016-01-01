@@ -48,6 +48,13 @@ public class InboxServiceImpl implements IInboxService{
         return inboxDao.insert(inbox);
     }
 
+    public boolean updateStatus(String userid, String id, int isread) {
+        inbox.setUserid(userid);
+        inbox.setId(id);
+        inbox.setIsread(isread);
+        return inboxDao.updateStatus(inbox);
+    }
+
     public boolean update(String id, String userid, String subject, String content, String sendmail, String receivemail, String sendtime, int isread, String files) {
         inbox.setId(id);
         inbox.setUserid(userid);

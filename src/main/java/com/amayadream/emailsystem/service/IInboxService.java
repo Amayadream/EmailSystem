@@ -15,6 +15,7 @@ public interface IInboxService {
     Inbox selectInboxById(String userid, String id);
     Inbox count(String userid);
     boolean insert(String userid, String subject, String content, String sendmail, String receivemail, String sendtime, int isread, String files);
+    boolean updateStatus(String userid, String id, int isread);
     boolean update(String id, String userid, String subject, String content, String sendmail, String receivemail, String sendtime, int isread, String files);
     boolean delete(String userid, String id);
     boolean deleteAll(String userid);

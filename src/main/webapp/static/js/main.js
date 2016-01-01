@@ -153,7 +153,6 @@ function showSetting(){
 		type : 'post',
 		data : {},
 		beforeSend : function(){
-
 		},
 		success : function(data){
 			if(data != null){

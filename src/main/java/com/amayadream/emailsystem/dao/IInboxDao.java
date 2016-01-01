@@ -17,6 +17,7 @@ public interface IInboxDao {
     Inbox selectInboxById(Inbox inbox);
     Inbox count(String userid);
     boolean insert(Inbox inbox);
+    boolean updateStatus(Inbox inbox);
     boolean update(Inbox inbox);
     boolean delete(Inbox inbox);
     boolean deleteAll(String userid);
