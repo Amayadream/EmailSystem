@@ -24,10 +24,9 @@ public class UploadUtil {
      * @param renameMark
      * @return
      */
-    public String[] upload(HttpServletRequest request, String fileUrl, String renameMark){
-        FileUtil fileUtil = new FileUtil();
-        DateUtil dateUtil = new DateUtil();
-        String absolute_file = "";
+    public String upload(HttpServletRequest request, String fileUrl, String renameMark){
+        CommonDate date = new CommonDate();
+        CommonValidate validate = new CommonValidate();
         String relative_file = "";
         //创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -51,17 +50,16 @@ public class UploadUtil {
                         //定义上传路径
                         String path = request.getSession().getServletContext().getRealPath(fileUrl);
                         //如果文件重复,则进行特定规则的重命名
-                        Long stamp = dateUtil.getStamp();
-                        path = fileUtil.checkPathEnd(path) + stamp;
-                        fileName = fileUtil.getNotrepeatFileName(path, fileName, renameMark);
+                        Long stamp = date.getStamp();
+                        path = validate.checkPathEnd(path) + stamp;
+                        fileName = validate.validateRepeatFileName(path, fileName, renameMark);
                         File localFile = new File(path, fileName);
                         if(!localFile.exists()){
                             localFile.mkdirs();
                         }
                         try {
                             file.transferTo(localFile);
-                            absolute_file += fileUtil.checkPathEnd(path) + fileName + ";";
-                            relative_file += fileUtil.checkStringEnd(fileUrl) + stamp + "/" + fileName + ";";
+                            relative_file += validate.checkStringEnd(fileUrl) + stamp + "/" + fileName + ";";
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -69,6 +67,6 @@ public class UploadUtil {
                 }
             }
         }
-        return new String[] {absolute_file,relative_file};
+        return relative_file;
     }
 }

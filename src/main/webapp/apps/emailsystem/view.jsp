@@ -99,16 +99,14 @@
           </c:if>
         </td>
         <td>
-          <c:if test="${file != ''}">
-            <c:forEach items="${fn:split(file,';')}" var="f" varStatus="index">           <!-- 遍历按照分号切割好的文件名称 -->
-            <c:forEach items="${fn:split(email.files,';')}" var="herf" varStatus="index"> <!-- 遍历按照分号切割好的文件的真实地址 -->
+          <c:if test="${email.files != ''}">
+            <c:forEach items="${fn:split(email.files,';')}" var="f" varStatus="index">           <!-- 遍历按照分号切割好的文件名称 -->
               <c:if test="${email.status == 1}">
-                <span class="label label-info"><a href="<%=path%>/email/download?id=${herf}">${f}</a></span>
+                <span class="label label-info"><a href="<%=path%>/email/download?id=${f}">${file[index.count - 1]}</a></span>
               </c:if>
               <c:if test="${email.status == 0}">
-                <span class="label label-default"><a href="<%=path%>/email/download?id=${herf}">${f}</a></span>
+                <span class="label label-default"><a href="<%=path%>/email/download?id=${f}">${file[index.count - 1]}</a></span>
               </c:if>
-            </c:forEach>
             </c:forEach>
           </c:if>
         </td>

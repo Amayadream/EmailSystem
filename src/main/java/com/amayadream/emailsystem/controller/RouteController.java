@@ -1,6 +1,7 @@
 package com.amayadream.emailsystem.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -35,10 +36,5 @@ public class RouteController {
     @RequestMapping("about")
     public String about(){
         return "apps/emailsystem/about";
-    }
-
-    @RequestMapping("view")
-    public String view(){
-        return "apps/emailsystem/view";
     }
 }

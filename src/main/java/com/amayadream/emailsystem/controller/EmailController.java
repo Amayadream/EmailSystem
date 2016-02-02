@@ -44,28 +44,51 @@ public class EmailController {
     public String send(@ModelAttribute("userid") String userid, String subject, String emails, String content, HttpServletRequest request,
                        DateUtil dateUtil, FileUtil fileUtil, UploadUtil uploadUtil, MailUtil mailUtil, RedirectAttributes redirectAttributes){
         Setting setting = settingService.selectSettingByUserid(userid);             //获取系统配置,即发信邮箱,发信密码,发信昵称,邮件服务器,端口号
-        String [] array = uploadUtil.upload(request, FILE_URI, RENAME_MARK);    //上传附件到FILE_URL目录,然后将文件路径以分号隔开返回
-        String absolute_file = array[0];        //绝对路径
-        String relative_file = array[1];        //相对路径
-        File[] attachments = fileUtil.getFileArrayByString(absolute_file,";");          //将文件路径按分号切割开,并获取File数组
+        String prefix_path = request.getSession().getServletContext().getRealPath("/");
+        String str = uploadUtil.upload(request, FILE_URI, RENAME_MARK);    //上传附件到指定目录,然后将文件路径以分号隔开返回
+        String[] files_uri = str.split(";");
+        File[] files = new File[files_uri.length];
+        int x = 0;
+        for(String item : files_uri){
+            files[x] = new File(prefix_path + "/" + item);
+            x++;
+        }
+
         String[] receiver = fileUtil.getStringArrayByString(emails,";");        //将收件人按分号切割开
-        mailUtil.init(setting.getServer(),setting.getPort(),setting.getSendmail(),setting.getSendpass(),subject,setting.getSendname(),content,receiver,null,null,attachments);
-        String meg = mailUtil.sendMail(true);
-        if (meg == "success") {
-            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), relative_file, 1);
+        mailUtil.init(setting.getServer(),setting.getPort(),setting.getSendmail(),setting.getSendpass(),subject,setting.getSendname(),content,receiver,null,null,files);
+        String msg = mailUtil.sendMail(true);
+        if (msg == "success") {
+            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), str, 1);
             redirectAttributes.addFlashAttribute("INFO","发送成功!");
         }else{
-            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), relative_file, 0);
+            emailService.insert(userid, emails, subject, content, dateUtil.getDateTime24(), str, 0);
             redirectAttributes.addFlashAttribute("ERROR","各种原因发送失败!");
         }
         return "redirect:/email";
     }
 
+    /**
+     * 重新发送
+     * @param userid
+     * @param eid
+     * @param mailUtil
+     * @param fileUtil
+     * @param redirectAttributes
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "sendAgain/{eid}")
-    public String sendAgain(@ModelAttribute("userid") String userid,@PathVariable("eid") String eid, MailUtil mailUtil, FileUtil fileUtil, RedirectAttributes redirectAttributes){
+    public String sendAgain(@ModelAttribute("userid") String userid,@PathVariable("eid") String eid, MailUtil mailUtil, FileUtil fileUtil, RedirectAttributes redirectAttributes, HttpServletRequest request){
         Setting setting = settingService.selectSettingByUserid(userid);
         Email email = emailService.selectEmailById(userid, eid);
-        File[] files = fileUtil.getFileArrayByString(email.getFiles(), ";");
+        String prefix_path = request.getSession().getServletContext().getRealPath("/");
+        String[] files_uri = email.getFiles().split(";");
+        File[] files = new File[files_uri.length];
+        int x = 0;
+        for(String item : files_uri){
+            files[x] = new File(prefix_path + "/" + item);
+            x++;
+        }
         String[] receiver = fileUtil.getStringArrayByString(email.getEmails(),";");
         mailUtil.init(setting.getServer(),setting.getPort(),setting.getSendmail(),setting.getSendpass(),email.getSubject(),setting.getSendname(),email.getContent(),receiver,null,null,files);
         String meg = mailUtil.sendMail(true);
@@ -114,17 +137,13 @@ public class EmailController {
     }
 
     @RequestMapping(value = "view/{eid}")
-    public String id(@ModelAttribute("userid") String userid, @PathVariable("eid") String eid, FileUtil fileUtil, RedirectAttributes redirectAttributes) {
+    public String id(@ModelAttribute("userid") String userid, @PathVariable("eid") String eid, FileUtil fileUtil, Model model) {
         Email email = emailService.selectEmailById(userid, eid);
         String[] receiver = fileUtil.getStringArrayByString(email.getEmails(), ";");      //使用工具类,将收信人按照分号切割开
         String name = "";       //收件人姓名
-        for (String rec : receiver) {     //遍历数组,分次查询....这里写的优点挫,将就做吧
+        for (String rec : receiver) {     //遍历数组,分次查询
             Contact contact = contactService.selectContactByEmail(userid, rec);
-            if (contact != null) {
-                name += contact.getName() + ";";
-            } else {
-                name += rec + ";";
-            }
+            name += contact != null ? contact.getName() + ";" : rec + ";";
         }
         email.setEmails(name);
         String file = "";
@@ -134,9 +153,9 @@ public class EmailController {
                 file += f.substring(f.lastIndexOf("/")+1) + ";";
             }
         }
-        redirectAttributes.addFlashAttribute("email",email);
-        redirectAttributes.addFlashAttribute("file",file);
-        return "redirect:/view";
+        model.addAttribute("email",email);
+        model.addAttribute("file",file.split(";"));
+        return "apps/emailsystem/view";
     }
 
     @RequestMapping("download")
@@ -147,7 +166,7 @@ public class EmailController {
             String fileNameEncode = new String(fileName.getBytes(),"ISO8859-1");
             response.setContentType("application/x-msdownload");
             FileInputStream FileInputStreamRef = new FileInputStream(new File(request.getSession().getServletContext().getRealPath(fileUrl)+"\\"+fileName));
-            response.setHeader("Content-Disposition","attachment;filename=\""+fileNameEncode+"\"");     //文件名经过处理,防止有空格时出现文件名补全的情况
+            response.setHeader("Content-Disposition","attachment;filename=\""+fileNameEncode+"\"");     //文件名经过处理,防止有空格时出现文件名不全的情况
             OutputStream osRef = response.getOutputStream();
             IOUtils.copy(FileInputStreamRef,osRef);
         } catch (UnsupportedEncodingException e) {
